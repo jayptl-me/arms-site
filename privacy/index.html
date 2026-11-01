@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ARMS Gmail — Privacy Policy</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+<h1>ARMS Gmail — Privacy Policy</h1>
+<p class="muted">Effective date: 1 November 2026</p>
+<p>ARMS Gmail is a feature of ARMS, a local-first, open-source AI agent
+gateway. It connects to your Gmail account so your agents can read, organize,
+draft, and send mail on your behalf.</p>
+<h2>Data we access</h2>
+<p>With your consent via Google OAuth, ARMS Gmail requests Gmail read, modify,
+compose, and send scopes. It accesses message content, labels, threads, and
+drafts only to perform the actions you ask your agents to perform.</p>
+<h2>Where your data lives</h2>
+<p><strong>Self-hosted / open-source use:</strong> your mail data and OAuth
+tokens stay on machines you control — an encrypted local vault, plus a
+database you choose (your own MongoDB Atlas or Aiven PostgreSQL). There is no
+ARMS-operated server in this mode; we cannot see, access, or share your data
+because it never reaches us.</p>
+<p><strong>Cloud tier (if offered):</strong> your data is stored per-tenant in
+isolated databases with per-tenant encryption keys, used only to operate the
+service.</p>
+<h2>What we never do</h2>
+<p>We never sell your data, never share it with advertisers, never use it to
+train models, and never access more mail than the task you requested requires.
+Deleted mail is moved to Trash (recoverable for 30 days); ARMS never
+permanently deletes mail on its own.</p>
+<h2>Your controls</h2>
+<p>Revoke access anytime at
+<a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>
+(this immediately stops ARMS Gmail). Delete local data by removing the ARMS
+state directory; request cloud-tier deletion by email and we confirm within
+30 days.</p>
+<nav><a href="/">Home</a><a href="/terms">Terms of Service</a></nav>
+<footer>Questions: jayptl0919@gmail.com</footer>
+</main>
+</body>
+</html>
