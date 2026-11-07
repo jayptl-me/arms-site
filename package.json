@@ -1,0 +1,14 @@
+{
+  "name": "arms-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun src/render.ts",
+    "launch": "bun test/launch.ts",
+    "test": "bun test/uifoundry-button.ts && bun test/launch.ts"
+  },
+  "dependencies": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  }
+}

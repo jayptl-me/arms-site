@@ -1,1 +1,394 @@
-:root{--bg:#0f1023;--fg:#eef;--mut:#9aa;--acc:#7c7ff2}*{box-sizing:border-box}body{background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif;margin:0}main{max-width:640px;margin:0 auto;padding:48px 24px 80px}h1{font-size:28px;margin:0 0 8px}h2{font-size:20px;margin-top:32px}p,li{color:var(--fg)}a{color:var(--acc)}nav{margin:24px 0;border-top:1px solid #333;padding-top:16px;font-size:14px}nav a{margin-right:16px}.muted{color:var(--mut);font-size:14px}footer{margin-top:48px;border-top:1px solid #333;padding-top:16px;font-size:14px;color:var(--mut)}
+/* Hallmark · shape: Statement · genre: modern-minimal · theme: brand · redesign: full
+ * paper: oklch(0.985 0.004 120) · accent: oklch(0.5 0.13 145) · display: Inter · body: Inter
+ * hero: Settled · nav: wordmark alone · footer: mast · imagery: none · signature: approval waits for a yes
+ * axes: paper/grotesk/moss · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E3 S3 R4 V4 · weakest: S, words only, so each claim is a section set large */
+/* Hallmark · inferred: audience people who run their own agents · use contact · tone technical */
+/* Hallmark · reworded "ARMS — local-first AI agent gateway" to "ARMS, a local-first AI agent gateway" · 19 names the dash */
+/* Hallmark · reworded the opening dash after "tools" to a comma · 19 names the dash */
+/* Hallmark · reworded "ARMS · operated by Jay Patel · jayptl0919@gmail.com" into separate lines · 63 names the dots */
+/* Hallmark · waive 1 · display font "inter" (--font-display) · Inter is the face already committed for this gateway, so the headline stays Inter and the wordmark takes Rethink Sans */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;560&family=Rethink+Sans:wght@560&display=swap");
+
+:root {
+  color-scheme: light;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
+  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(2.75rem, 5vw + 1rem, 4.25rem);
+  --text-section: clamp(1.75rem, 2vw + 1rem, 3.25rem); --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem); --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(0.5 0.2 25); --color-success: oklch(0.52 0.14 150);
+  --container: 1120px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 96px; --section-gap: 128px; --section-gap-l: 160px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+  --color-paper: oklch(0.985 0.004 120);
+  --color-paper-2: oklch(0.965 0.006 120);
+  --color-paper-3: oklch(0.94 0.008 120);
+  --color-ink: oklch(0.22 0.02 140);
+  --color-ink-2: oklch(0.32 0.022 140);
+  --color-muted: oklch(0.42 0.025 140);
+  --color-rule: oklch(0.86 0.012 130);
+  --color-accent: oklch(0.5 0.13 145);
+  --color-accent-ink: oklch(0.98 0.01 130);
+  --color-focus: oklch(0.4 0.11 145);
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-outlier: "Rethink Sans", ui-sans-serif, system-ui, sans-serif;
+  --radius-card: 8px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
+  --tracking-display: -0.02em; --display-weight: 560;
+  --space-2: var(--space-xs);
+  --space-3: var(--space-sm);
+  --space-4: var(--space-md);
+  --space-6: var(--space-lg);
+  --radius-control: 8px;
+  --color-line: var(--color-rule);
+  --color-line-control: var(--color-rule);
+  --color-surface: var(--color-paper);
+  --color-sunken: var(--color-paper-3);
+  --color-on-accent: var(--color-accent-ink);
+  --color-accent-strong: oklch(0.44 0.13 145);
+  --color-accent-soft: oklch(0.94 0.03 145);
+  --color-ink-muted: var(--color-muted);
+  --color-danger: var(--color-error);
+  --font-ui: var(--font-body);
+  --weight-medium: 560;
+  --duration-instant: var(--dur-micro);
+  --duration-reduced: 0.01ms;
+  --ease-standard: var(--ease-out);
+  --target-min: 44px;
+  --type-sm-size: var(--text-sm); --type-sm-line: 1.4; --type-sm-track: 0;
+  --type-body-size: var(--text-md); --type-body-line: 1.5; --type-body-track: 0;
+  --type-body-lg-size: var(--text-lg); --type-body-lg-line: 1.4; --type-body-lg-track: 0;
+}
+@media (max-width: 60rem) { :root { --gutter: 24px; --section-gap-s: 72px; --section-gap: 96px; --section-gap-l: 120px; } }
+@media (max-width: 40rem) { :root { --gutter: 16px; --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --gap-columns: 16px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scrollbar-color: var(--color-muted) var(--color-paper); scroll-padding-top: var(--space-3xl); }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-md); line-height: 1.55; -webkit-font-smoothing: antialiased; caret-color: var(--color-accent); }
+::selection { background: color-mix(in oklab, var(--color-accent) 22%, transparent); color: var(--color-ink); }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.16em; }
+h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: var(--display-weight, 700); font-synthesis: none; letter-spacing: var(--tracking-display); line-height: 1.05; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+h1 { max-width: 22ch; font-size: var(--text-title); line-height: 1.15; }
+h2 { max-width: 24ch; font-size: var(--text-section); }
+h3 { max-width: 40ch; font-size: var(--text-title); line-height: 1.2; }
+.lead { font-size: var(--text-lead); line-height: 1.45; max-width: 36ch; }
+p { margin: 0; text-wrap: pretty; }
+p:not([class]) { max-width: 62ch; }
+img, video { max-width: 100%; height: auto; display: block; }
+svg { display: block; }
+[hidden] { display: none !important; }
+button, input, select, textarea { font: inherit; }
+.num, .figure, td.num { font-variant-numeric: tabular-nums; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) {
+  *:not(.keep-motion), *:not(.keep-motion)::before, *:not(.keep-motion)::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.ss-button {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  margin: 0;
+  border: 1px solid var(--color-line-control);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-weight: var(--weight-medium);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    opacity var(--duration-instant) var(--ease-standard),
+    transform var(--duration-instant) var(--ease-standard);
+}
+
+.ss-button--small {
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-3);
+  font-size: var(--type-sm-size);
+  line-height: var(--type-sm-line);
+  letter-spacing: var(--type-sm-track);
+}
+
+.ss-button--medium {
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-4);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+}
+
+.ss-button--large {
+  min-block-size: calc(var(--target-min) + var(--space-2));
+  padding-inline: var(--space-6);
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-line);
+  letter-spacing: var(--type-body-lg-track);
+}
+
+.ss-button__label {
+  min-inline-size: 0;
+}
+
+.ss-button__label,
+.ss-button__icon {
+  transition: opacity var(--duration-instant) var(--ease-standard);
+}
+
+.ss-button__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.ss-button__icon > svg {
+  inline-size: 1em;
+  block-size: 1em;
+}
+
+.ss-button[data-icon-only="true"] {
+  padding-inline: 0;
+}
+
+.ss-button--small[data-icon-only="true"] {
+  inline-size: var(--target-min);
+}
+
+.ss-button--medium[data-icon-only="true"] {
+  inline-size: var(--target-min);
+}
+
+.ss-button--large[data-icon-only="true"] {
+  inline-size: calc(var(--target-min) + var(--space-2));
+}
+
+.ss-button[data-full-width="true"] {
+  inline-size: 100%;
+}
+
+.ss-button--primary {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.ss-button--primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-accent-strong);
+  background: var(--color-accent-strong);
+}
+
+.ss-button--primary:active:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+}
+
+.ss-button--secondary {
+  border-color: var(--color-line-control);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.ss-button--secondary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-sunken);
+}
+
+.ss-button--secondary:active:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-ink);
+  background: var(--color-sunken);
+}
+
+.ss-button--quiet {
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+}
+
+.ss-button--quiet:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-sunken);
+}
+
+.ss-button--quiet:active:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+.ss-button--danger {
+  border-color: var(--color-line-control);
+  background: var(--color-surface);
+  color: var(--color-danger);
+}
+
+.ss-button--danger:hover:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-danger);
+}
+
+.ss-button--danger:active:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-danger);
+  background: var(--color-sunken);
+}
+
+.ss-button:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(1px);
+}
+
+.ss-button[aria-busy="true"] {
+  cursor: progress;
+}
+
+.ss-button[aria-busy="true"] .ss-button__label,
+.ss-button[aria-busy="true"] .ss-button__icon {
+  opacity: 0.6;
+}
+
+.ss-button[data-disabled="true"] {
+  border-color: var(--color-line);
+  background: var(--color-sunken);
+  color: var(--color-ink-muted);
+  cursor: not-allowed;
+  opacity: 1;
+  transform: none;
+}
+
+.ss-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-button,
+  .ss-button__label,
+  .ss-button__icon {
+    transition: opacity var(--duration-reduced) var(--ease-standard);
+  }
+
+  .ss-button:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: none;
+  }
+}
+
+/* Separator · component stylesheet. The shared demo chrome comes from
+   design-systems/stillstate/demo.css; nothing here redeclares it. The line is a 1px hairline on
+   the line token, the house pattern from demo.css. Ported verbatim from
+   packages/html/separator/separator.css: the component rules and the reflow lesson inside them. */
+
+.ss-separator {
+  display: block;
+  box-sizing: content-box;
+  flex: none;
+  /* auto, not 100%: the inset variant adds a margin-inline-start, and 100% plus a margin is wider
+     than the page - it overflowed the 320px reflow check by 8px and the 200% zoom check by 2px. */
+  inline-size: auto;
+  margin-block: var(--space-4);
+  margin-inline: 0;
+  border: 0;
+  border-block-start: 1px solid var(--color-line);
+}
+
+.ss-separator--vertical {
+  inline-size: 0;
+  block-size: 100%;
+  align-self: stretch;
+  margin-block: 0;
+  margin-inline: var(--space-2);
+  border-block-start: 0;
+  border-inline-start: 1px solid var(--color-line);
+}
+
+.ss-separator--inset {
+  margin-block: var(--space-2);
+  margin-inline-start: calc(1em + var(--space-3));
+}
+
+main {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  box-sizing: border-box;
+}
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  padding-block: var(--space-md) var(--space-lg);
+}
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wordmark {
+  font-family: var(--font-outlier);
+  font-weight: var(--display-weight);
+  font-size: var(--text-lg);
+  letter-spacing: var(--tracking-display);
+  text-decoration: none;
+  color: var(--color-ink);
+}
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-lg);
+}
+.hero h1 {
+  max-width: 12ch;
+  font-size: var(--text-display);
+  line-height: 1.02;
+}
+.opening { max-width: 62ch; }
+.points { padding-block: var(--section-gap); }
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap-columns);
+}
+.point {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding-top: var(--space-lg);
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+@media (max-width: 60rem) {
+  .row { grid-template-columns: 1fr; }
+}
+.mast {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding-block: var(--section-gap-s) var(--space-3xl);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+.mast .wordmark { color: var(--color-ink); }
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-block-start: var(--space-lg);
+}
+.muted { color: var(--color-muted); font-size: var(--text-sm); }
+h2 { margin-top: var(--space-xl); }
+.point h2,
+.opening h2 { margin-top: 0; }
