@@ -5,10 +5,14 @@
   "scripts": {
     "build": "bun src/render.ts",
     "launch": "bun test/launch.ts",
-    "test": "bun test/uifoundry-button.ts && bun test/launch.ts"
+    "test": "bun test/uifoundry-button.ts && bun test/launch.ts",
+    "lint": "oxlint"
   },
   "dependencies": {
     "react": "19.3.1",
     "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "oxlint": "1.93.0"
   }
 }
