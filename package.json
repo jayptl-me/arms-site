@@ -8,7 +8,7 @@
     "test": "bun test/uifoundry-button.ts && bun test/launch.ts"
   },
   "dependencies": {
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   }
 }
