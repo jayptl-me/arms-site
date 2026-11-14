@@ -1,0 +1,240 @@
+/* Copied from UIFoundry packages/react/menu/menu.css at commit c2c6b490e422e8a63739408a21e3c312b55ade34.
+ * MIT licence, see src/ui/NOTICE.md. Local changes: none. */
+/* Menu · Stillstate · React target. The class contract is the canonical HTML artifact's and the Vue
+   port's, carried rule for rule; every value is a token from design-systems/stillstate/tokens.css. */
+
+.ss-menu {
+  position: relative;
+  display: inline-block;
+  --ss-menu-gap: var(--space-2);
+  --ss-menu-margin: var(--space-4);
+}
+
+.ss-menu__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-line-control);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-instant) var(--ease-standard);
+}
+
+.ss-menu__trigger:hover,
+.ss-menu__trigger[aria-expanded="true"] {
+  background: var(--color-sunken);
+}
+
+.ss-menu__trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.ss-menu__surface {
+  position: absolute;
+  z-index: var(--z-overlay);
+  inset-inline-start: 0;
+  top: calc(100% + var(--ss-menu-gap));
+  min-inline-size: 100%;
+  padding: var(--space-1);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-overlay);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-overlay);
+  --ss-menu-enter-x: calc(0 * var(--shift-sm));
+  --ss-menu-enter-y: calc(-1 * var(--shift-sm));
+}
+
+.ss-menu__surface[data-placement="top"] {
+  top: auto;
+  bottom: calc(100% + var(--ss-menu-gap));
+  --ss-menu-enter-y: var(--shift-sm);
+}
+
+.ss-menu__surface[data-placement="start"] {
+  inset-inline-start: auto;
+  inset-inline-end: calc(100% + var(--ss-menu-gap));
+  top: 0;
+  --ss-menu-enter-x: var(--shift-sm);
+  --ss-menu-enter-y: calc(0 * var(--shift-sm));
+}
+
+.ss-menu__surface[data-placement="end"] {
+  inset-inline-start: calc(100% + var(--ss-menu-gap));
+  top: 0;
+  --ss-menu-enter-x: calc(-1 * var(--shift-sm));
+  --ss-menu-enter-y: calc(0 * var(--shift-sm));
+}
+
+.ss-menu__scroll {
+  max-block-size: calc(var(--space-24) * 3);
+  overflow-block: auto;
+  padding: var(--space-1);
+  margin: calc(-1 * var(--space-1));
+}
+
+.ss-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-3);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: var(--type-sm-size);
+  line-height: var(--type-sm-line);
+  letter-spacing: var(--type-sm-track);
+  font-weight: var(--weight-medium);
+  text-align: start;
+  cursor: pointer;
+}
+
+.ss-menu__item:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.ss-menu__item:not([aria-disabled="true"]):hover,
+.ss-menu__item[data-highlighted="true"] {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+.ss-menu__item--danger,
+.ss-menu__item--danger:not([aria-disabled="true"]):hover,
+.ss-menu__item--danger[data-highlighted="true"] {
+  color: var(--color-danger);
+}
+
+.ss-menu__item[aria-disabled="true"] {
+  color: var(--color-ink-muted);
+  cursor: default;
+}
+
+.ss-menu__icon,
+.ss-menu__check,
+.ss-menu__caret {
+  inline-size: 1em;
+  block-size: 1em;
+  flex: 0 0 auto;
+}
+
+.ss-menu__check {
+  visibility: hidden;
+}
+
+.ss-menu__item[aria-checked="true"] .ss-menu__check {
+  visibility: visible;
+}
+
+.ss-menu__label {
+  white-space: nowrap;
+}
+
+.ss-menu__shortcut {
+  margin-inline-start: auto;
+  color: var(--color-ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  letter-spacing: var(--type-caption-track);
+}
+
+.ss-menu__item[data-highlighted="true"] .ss-menu__shortcut {
+  color: inherit;
+}
+
+.ss-menu__separator {
+  inline-size: 100%;
+  block-size: 0;
+  margin-block: var(--space-1);
+  border: 0;
+  border-block-start: 1px solid var(--color-line);
+}
+
+.ss-menu__branch {
+  position: relative;
+}
+
+@keyframes ss-menu-in {
+  from {
+    opacity: 0;
+    transform: translate(var(--ss-menu-enter-x), var(--ss-menu-enter-y));
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(calc(0 * var(--shift-sm)), calc(0 * var(--shift-sm)));
+  }
+}
+
+@keyframes ss-menu-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.ss-menu[data-state="open"] .ss-menu__surface {
+  animation: ss-menu-in var(--duration-fast) var(--ease-enter);
+}
+
+.ss-menu[data-state="closing"] .ss-menu__surface {
+  animation: ss-menu-out var(--duration-instant) var(--ease-exit);
+}
+
+@keyframes ss-menu-reduced-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ss-menu-reduced-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-menu[data-state="open"] .ss-menu__surface {
+    animation-name: ss-menu-reduced-in;
+    animation-duration: var(--duration-reduced);
+  }
+
+  .ss-menu[data-state="closing"] .ss-menu__surface {
+    animation-name: ss-menu-reduced-out;
+    animation-duration: var(--duration-reduced);
+  }
+
+  .ss-menu__trigger {
+    transition: none;
+  }
+}
+
+.ss-menu-lock {
+  overflow: hidden;
+}

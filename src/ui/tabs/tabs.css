@@ -1,0 +1,230 @@
+/* Copied from UIFoundry packages/react/tabs/tabs.css at commit c2c6b490e422e8a63739408a21e3c312b55ade34.
+ * MIT licence, see src/ui/NOTICE.md. Local changes: none. */
+/* Tabs · Stillstate · React target. Same rules as the canonical HTML artifact, because the class
+   contract is the API in every family. The swap is one short opacity change and nothing else: no slide,
+   no scale, no height animation. Demo chrome comes from design-systems/stillstate/demo.css. */
+
+.ss-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+/* The list scrolls horizontally at narrow widths; it never wraps into ragged rows. The scroller carries
+   the overflow and the block padding that room gives the focus ring, which is 4px wide and would
+   otherwise be cut off by its own scroll box. */
+.ss-tabs__scroll {
+  inline-size: 100%;
+  min-inline-size: 0;
+  overflow-inline: auto;
+  padding-block: var(--space-1);
+}
+
+.ss-tabs__list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  border-block-end: 1px solid var(--color-line);
+}
+
+/* One tab is a real button. The indicator is its own end border, pulled up over the list hairline, so
+   it sits under the active label and never spans the whole list. */
+.ss-tabs__tab {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: var(--target-min);
+  min-block-size: var(--target-min);
+  margin-block-end: -1px;
+  padding-inline: var(--space-4);
+  border: 0;
+  border-block-end: 2px solid transparent;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-ink-soft);
+  font-family: var(--font-ui);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+  font-weight: var(--weight-medium);
+  text-align: start;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.ss-tabs__tab:hover:not(:disabled) {
+  color: var(--color-ink);
+}
+
+.ss-tabs__tab[aria-selected="true"] {
+  color: var(--color-ink);
+  font-weight: var(--weight-semibold);
+  border-block-end-color: var(--color-accent);
+}
+
+/* A disabled tab is announced as disabled and skipped by the arrow keys. Its text is the muted token,
+   which is the one colour exemption a disabled control is allowed to take. */
+.ss-tabs__tab:disabled {
+  color: var(--color-ink-muted);
+  border-block-end-color: var(--color-line);
+  cursor: default;
+}
+
+.ss-tabs__tab:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.ss-tabs__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  inline-size: 100%;
+  /* The panel is a keyboard stop, so it is a target: a single short paragraph measured 26px tall and
+     failed the 44px floor the accessibility gate enforces. */
+  min-block-size: var(--target-min);
+}
+
+/* `display: flex` beats the user-agent rule for [hidden], so the hidden panels need the declaration
+   back or every panel paints at once. */
+.ss-tabs__panel[hidden] {
+  display: none;
+}
+
+.ss-tabs__panel:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.ss-tabs__panel-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-h3-size);
+  line-height: var(--type-h3-line);
+  letter-spacing: var(--type-h3-track);
+  font-weight: var(--weight-semibold);
+}
+
+.ss-tabs__panel-body {
+  max-inline-size: var(--measure);
+  margin: 0;
+  color: var(--color-ink-soft);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+}
+
+.ss-tabs__panel-list {
+  margin: 0;
+  padding-inline-start: var(--space-6);
+  max-inline-size: var(--measure);
+  color: var(--color-ink-soft);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+}
+
+/* The live line the demo keeps beside a manual tab set: it names what is focused and what is selected,
+   which are two different things when activation is manual. */
+.ss-tabs__status {
+  margin: 0;
+  color: var(--color-ink-muted);
+  font-size: var(--type-sm-size);
+  line-height: var(--type-sm-line);
+  letter-spacing: var(--type-sm-track);
+}
+
+/* Vertical: the list becomes a column, the hairline moves to its end edge and the indicator follows. */
+.ss-tabs--vertical {
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+/* The panel takes what the list leaves in the row axis. Without this its 100% inline size plus the list
+   is wider than the page and the 320px reflow fails. */
+.ss-tabs--vertical .ss-tabs__panel {
+  flex: 1 1 0;
+  inline-size: auto;
+  min-inline-size: 0;
+}
+
+.ss-tabs--vertical .ss-tabs__scroll {
+  inline-size: auto;
+  overflow: visible;
+  padding-block: 0;
+  flex: 0 0 auto;
+}
+
+.ss-tabs--vertical .ss-tabs__list {
+  flex-direction: column;
+  align-items: stretch;
+  border-block-end: 0;
+  border-inline-end: 1px solid var(--color-line);
+}
+
+.ss-tabs--vertical .ss-tabs__tab {
+  margin-block-end: 0;
+  margin-inline-end: -1px;
+  border-block-end: 0;
+  border-inline-end: 2px solid transparent;
+}
+
+.ss-tabs--vertical .ss-tabs__tab[aria-selected="true"] {
+  border-block-end-color: transparent;
+  border-inline-end-color: var(--color-accent);
+}
+
+.ss-tabs--vertical .ss-tabs__tab:disabled {
+  border-block-end-color: transparent;
+  border-inline-end-color: var(--color-line);
+}
+
+/* Sizes change the type and the inline padding only. The block size never drops below the 44px target,
+   so the small size is still a touch target. */
+.ss-tabs--small .ss-tabs__tab {
+  padding-inline: var(--space-3);
+  font-size: var(--type-sm-size);
+  line-height: var(--type-sm-line);
+  letter-spacing: var(--type-sm-track);
+}
+
+.ss-tabs--large .ss-tabs__tab {
+  padding-inline: var(--space-6);
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-line);
+  letter-spacing: var(--type-body-lg-track);
+}
+
+/* The panel swap: one opacity change, no movement. */
+@keyframes ss-tabs-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.ss-tabs__panel:not([hidden]) {
+  animation: ss-tabs-fade var(--duration-fast) var(--ease-standard);
+}
+
+/* Reduced motion: the indicator and the panel change instantly, and nothing is hidden by the swap. */
+@media (prefers-reduced-motion: reduce) {
+  .ss-tabs__panel:not([hidden]) {
+    animation: none;
+  }
+
+  .ss-tabs__tab {
+    transition: none;
+  }
+}

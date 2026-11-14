@@ -1,0 +1,146 @@
+/* Copied from UIFoundry packages/react/accordion/accordion.css at commit c2c6b490e422e8a63739408a21e3c312b55ade34.
+ * MIT licence, see src/ui/NOTICE.md. Local changes: none. */
+/* Accordion · Stillstate · React target. Same rules as the canonical HTML artifact, because the class
+   contract is the API in every family. The panel opens instantly in height with one short opacity change on
+   its content and the chevron snaps. Demo chrome comes from design-systems/stillstate/demo.css. */
+
+.ss-accordion {
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  min-inline-size: 0;
+  border-block-start: 1px solid var(--color-line);
+}
+
+.ss-accordion__item {
+  border-block-end: 1px solid var(--color-line);
+}
+
+/* The heading element is the caller's choice, so the reset lives on the class, not on h3. */
+.ss-accordion__heading {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.ss-accordion__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  inline-size: 100%;
+  min-block-size: calc(var(--target-min) + var(--space-3));
+  margin: 0;
+  padding: var(--space-3) var(--space-2);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-line);
+  letter-spacing: var(--type-body-lg-track);
+  font-weight: var(--weight-medium);
+  text-align: start;
+  cursor: pointer;
+}
+
+.ss-accordion__trigger:hover:not(:disabled) {
+  color: var(--color-accent-strong);
+}
+
+.ss-accordion__trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.ss-accordion__trigger:disabled {
+  color: var(--color-ink-muted);
+  cursor: default;
+}
+
+/* The chevron is drawn from borders so it needs no asset and no font, and its direction changes through a
+   static transform: the spec says it snaps, so nothing here is transitioned. */
+.ss-accordion__chevron {
+  flex: 0 0 auto;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-inline-end: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  transform: rotate(45deg);
+  transform-origin: center;
+}
+
+.ss-accordion__trigger[aria-expanded="true"] .ss-accordion__chevron {
+  transform: rotate(225deg);
+}
+
+.ss-accordion__panel {
+  padding: 0 var(--space-2) var(--space-6);
+  /* The panel is a keyboard stop, so it is a target: the same 44px floor the tabpanel carries. */
+  min-block-size: var(--target-min);
+}
+
+/* The user-agent sheet already hides [hidden]; this states it on the panel itself so a later display rule
+   cannot silently unhide a collapsed section. */
+.ss-accordion__panel[hidden] {
+  display: none;
+}
+
+.ss-accordion__panel:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.ss-accordion__content {
+  max-inline-size: var(--measure);
+  color: var(--color-ink-soft);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+}
+
+.ss-accordion__content > :first-child {
+  margin-block-start: 0;
+}
+
+.ss-accordion__content > :last-child {
+  margin-block-end: 0;
+}
+
+.ss-accordion--small .ss-accordion__trigger {
+  min-block-size: var(--target-min);
+  padding-block: var(--space-2);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+}
+
+.ss-accordion--large .ss-accordion__trigger {
+  min-block-size: calc(var(--target-min) + var(--space-6));
+  padding-block: var(--space-4);
+  font-size: var(--type-h3-size);
+  line-height: var(--type-h3-line);
+  letter-spacing: var(--type-h3-track);
+}
+
+/* The one motion: the content fades in when its panel opens. Height is never animated. */
+@keyframes ss-accordion-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.ss-accordion__panel:not([hidden]) .ss-accordion__content {
+  animation: ss-accordion-fade var(--duration-fast) var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-accordion__panel:not([hidden]) .ss-accordion__content {
+    animation: none;
+  }
+}

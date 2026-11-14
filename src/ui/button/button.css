@@ -1,0 +1,190 @@
+/* Copied from UIFoundry packages/react/button/button.css at commit c2c6b490e422e8a63739408a21e3c312b55ade34.
+ * MIT licence, see src/ui/NOTICE.md. Local changes: none. */
+.ss-button {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  margin: 0;
+  border: 1px solid var(--color-line-control);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-weight: var(--weight-medium);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    opacity var(--duration-instant) var(--ease-standard),
+    transform var(--duration-instant) var(--ease-standard);
+}
+
+.ss-button--small {
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-3);
+  font-size: var(--type-sm-size);
+  line-height: var(--type-sm-line);
+  letter-spacing: var(--type-sm-track);
+}
+
+.ss-button--medium {
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-4);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+}
+
+.ss-button--large {
+  min-block-size: calc(var(--target-min) + var(--space-2));
+  padding-inline: var(--space-6);
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-line);
+  letter-spacing: var(--type-body-lg-track);
+}
+
+.ss-button__label {
+  min-inline-size: 0;
+}
+
+.ss-button__label,
+.ss-button__icon {
+  transition: opacity var(--duration-instant) var(--ease-standard);
+}
+
+.ss-button__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.ss-button__icon > svg {
+  inline-size: 1em;
+  block-size: 1em;
+}
+
+.ss-button[data-icon-only="true"] {
+  padding-inline: 0;
+}
+
+.ss-button--small[data-icon-only="true"] {
+  inline-size: var(--target-min);
+}
+
+.ss-button--medium[data-icon-only="true"] {
+  inline-size: var(--target-min);
+}
+
+.ss-button--large[data-icon-only="true"] {
+  inline-size: calc(var(--target-min) + var(--space-2));
+}
+
+.ss-button[data-full-width="true"] {
+  inline-size: 100%;
+}
+
+.ss-button--primary {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.ss-button--primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-accent-strong);
+  background: var(--color-accent-strong);
+}
+
+.ss-button--primary:active:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+}
+
+.ss-button--secondary {
+  border-color: var(--color-line-control);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.ss-button--secondary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-sunken);
+}
+
+.ss-button--secondary:active:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-ink);
+  background: var(--color-sunken);
+}
+
+.ss-button--quiet {
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+}
+
+.ss-button--quiet:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-sunken);
+}
+
+.ss-button--quiet:active:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+.ss-button--danger {
+  border-color: var(--color-line-control);
+  background: var(--color-surface);
+  color: var(--color-danger);
+}
+
+.ss-button--danger:hover:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-danger);
+}
+
+.ss-button--danger:active:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--color-danger);
+  background: var(--color-sunken);
+}
+
+.ss-button:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(1px);
+}
+
+.ss-button[aria-busy="true"] {
+  cursor: progress;
+}
+
+.ss-button[aria-busy="true"] .ss-button__label,
+.ss-button[aria-busy="true"] .ss-button__icon {
+  opacity: 0.6;
+}
+
+.ss-button[data-disabled="true"] {
+  border-color: var(--color-line);
+  background: var(--color-sunken);
+  color: var(--color-ink-muted);
+  cursor: not-allowed;
+  opacity: 1;
+  transform: none;
+}
+
+.ss-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-button,
+  .ss-button__label,
+  .ss-button__icon {
+    transition: opacity var(--duration-reduced) var(--ease-standard);
+  }
+
+  .ss-button:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: none;
+  }
+}

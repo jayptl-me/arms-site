@@ -1,0 +1,34 @@
+/* Copied from UIFoundry packages/react/separator/separator.css at commit c2c6b490e422e8a63739408a21e3c312b55ade34.
+ * MIT licence, see src/ui/NOTICE.md. Local changes: none. */
+/* Separator · component stylesheet. The shared demo chrome comes from
+   design-systems/stillstate/demo.css; nothing here redeclares it. The line is a 1px hairline on
+   the line token, the house pattern from demo.css. Ported verbatim from
+   packages/html/separator/separator.css: the component rules and the reflow lesson inside them. */
+
+.ss-separator {
+  display: block;
+  box-sizing: content-box;
+  flex: none;
+  /* auto, not 100%: the inset variant adds a margin-inline-start, and 100% plus a margin is wider
+     than the page - it overflowed the 320px reflow check by 8px and the 200% zoom check by 2px. */
+  inline-size: auto;
+  margin-block: var(--space-4);
+  margin-inline: 0;
+  border: 0;
+  border-block-start: 1px solid var(--color-line);
+}
+
+.ss-separator--vertical {
+  inline-size: 0;
+  block-size: 100%;
+  align-self: stretch;
+  margin-block: 0;
+  margin-inline: var(--space-2);
+  border-block-start: 0;
+  border-inline-start: 1px solid var(--color-line);
+}
+
+.ss-separator--inset {
+  margin-block: var(--space-2);
+  margin-inline-start: calc(1em + var(--space-3));
+}

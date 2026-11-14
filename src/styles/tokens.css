@@ -1,24 +1,31 @@
+/* Theme: follows the system unless the page switch stored a choice (data-theme on <html>).
+ * color-scheme drives every light-dark() token below, so the two never drift apart. */
+:root { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 :root {
-  color-scheme: light;
   --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
   --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
   --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(2.75rem, 5vw + 1rem, 4.25rem);
   --text-section: clamp(1.75rem, 2vw + 1rem, 3.25rem); --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem); --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
-  --color-error: oklch(0.5 0.2 25); --color-success: oklch(0.52 0.14 150);
+  --color-error: light-dark(oklch(0.5 0.2 25), oklch(0.66 0.22 25)); --color-success: light-dark(oklch(0.52 0.14 150), oklch(0.76 0.17 150));
+  --color-warning: light-dark(oklch(0.55 0.12 75), oklch(0.8 0.15 80)); --color-info: light-dark(oklch(0.5 0.11 230), oklch(0.78 0.1 215));
   --container: 1120px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 96px; --section-gap: 128px; --section-gap-l: 160px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
-  --color-paper: oklch(0.985 0.004 120);
-  --color-paper-2: oklch(0.965 0.006 120);
-  --color-paper-3: oklch(0.94 0.008 120);
-  --color-ink: oklch(0.22 0.02 140);
-  --color-ink-2: oklch(0.32 0.022 140);
-  --color-muted: oklch(0.42 0.025 140);
-  --color-rule: oklch(0.86 0.012 130);
-  --color-accent: oklch(0.5 0.13 145);
-  --color-accent-ink: oklch(0.98 0.01 130);
-  --color-focus: oklch(0.4 0.11 145);
+  /* Theme colours: light-dark(paper day, graphite night). Values from the ARMS design system;
+   * entries marked "derived" have no value there yet and are placeholders until the look round. */
+  --color-paper: light-dark(oklch(0.985 0.004 120), oklch(0.13 0.012 135));
+  --color-paper-2: light-dark(oklch(0.965 0.006 120), oklch(0.17 0.014 135));
+  --color-paper-3: light-dark(oklch(0.94 0.008 120), oklch(0.22 0.015 135));
+  --color-ink: light-dark(oklch(0.22 0.02 140), oklch(0.97 0.006 135));
+  --color-ink-2: light-dark(oklch(0.32 0.022 140), oklch(0.88 0.01 135)); /* dark derived */
+  --color-muted: light-dark(oklch(0.42 0.025 140), oklch(0.8 0.015 135));
+  --color-rule: light-dark(oklch(0.86 0.012 130), oklch(0.24 0.014 135)); /* dark = neutral-dark-mode-ui */
+  --color-accent: light-dark(oklch(0.5 0.13 145), oklch(0.78 0.15 130));
+  --color-accent-ink: light-dark(oklch(0.98 0.01 130), oklch(0.17 0.03 130));
+  --color-focus: light-dark(oklch(0.4 0.11 145), oklch(0.78 0.15 130)); /* dark derived: the night accent */
   --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-outlier: "Rethink Sans", ui-sans-serif, system-ui, sans-serif;
@@ -34,8 +41,8 @@
   --color-surface: var(--color-paper);
   --color-sunken: var(--color-paper-3);
   --color-on-accent: var(--color-accent-ink);
-  --color-accent-strong: oklch(0.44 0.13 145);
-  --color-accent-soft: oklch(0.94 0.03 145);
+  --color-accent-strong: light-dark(oklch(0.44 0.13 145), oklch(0.84 0.13 130)); /* dark derived */
+  --color-accent-soft: light-dark(oklch(0.94 0.03 145), oklch(0.24 0.04 130)); /* dark derived */
   --color-ink-muted: var(--color-muted);
   --color-danger: var(--color-error);
   --font-ui: var(--font-body);

@@ -3,16 +3,30 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun src/render.ts",
-    "launch": "bun test/launch.ts",
-    "test": "bun test/uifoundry-button.ts && bun test/launch.ts",
-    "lint": "oxlint"
+    "dev": "bun --bun astro dev",
+    "build": "bun --bun astro build",
+    "preview": "bun --bun astro preview",
+    "check": "bun --bun astro check",
+    "lint": "oxlint",
+    "test": "bun test/launch.ts && bun test/ui-button.ts",
+    "a11y": "bun scripts/a11y.ts",
+    "budget": "bun scripts/budget.ts",
+    "negative": "bash scripts/negative-controls.sh",
+    "grade": "bash scripts/grade.sh"
   },
   "dependencies": {
+    "@astrojs/react": "7.1.4",
+    "astro": "7.4.7",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
   "devDependencies": {
-    "oxlint": "1.93.0"
+    "@astrojs/check": "0.9.12",
+    "@axe-core/playwright": "4.14.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "oxlint": "1.93.0",
+    "playwright": "1.65.0",
+    "typescript": "6.0.3"
   }
 }

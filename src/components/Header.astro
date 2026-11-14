@@ -1,0 +1,53 @@
+---
+import ThemeSwitch from "./ThemeSwitch.astro";
+import { nav } from "../site.ts";
+
+interface Props {
+  path: string;
+}
+
+const clean = (p: string) => p.replace(/\/+$/, "") || "/";
+const here = clean(Astro.props.path);
+---
+
+<header class="site-header">
+  <div class="container site-header__bar">
+    <a class="wordmark" href="/" aria-current={here === "/" ? "page" : undefined}>ARMS</a>
+    <div class="site-header__tools">
+      <nav class="site-nav" aria-label="Main">
+        <button class="site-nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav-list">Menu</button>
+        <ul id="site-nav-list" class="site-nav__list" data-open="false">
+          {
+            nav.map((link) => (
+              <li>
+                <a href={link.href} aria-current={here === link.href ? "page" : undefined}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <ThemeSwitch />
+    </div>
+  </div>
+</header>
+
+<script>
+  // Disclosure navigation (W3C APG): the button shows and hides the list on narrow screens.
+  const toggle = document.querySelector<HTMLButtonElement>(".site-nav__toggle");
+  const list = document.getElementById("site-nav-list");
+  if (toggle && list) {
+    const set = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      list.dataset.open = String(open);
+    };
+    toggle.addEventListener("click", () => set(toggle.getAttribute("aria-expanded") !== "true"));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+        set(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>

@@ -1,0 +1,35 @@
+---
+import Base from "../layouts/Base.astro";
+import { Button } from "../ui/button/button.tsx";
+import { Separator } from "../ui/separator/separator.tsx";
+import "../ui/button/button.css";
+import "../ui/separator/separator.css";
+import "../styles/home.css";
+import { claims } from "../claims.ts";
+---
+
+<Base title="ARMS, a local-first AI agent gateway" description="Open-source tools for agents, on your machine.">
+  <div class="container">
+    <section class="hero">
+      <div class="intro">
+        <h1>{claims.headline}</h1>
+        <p class="lead">{claims.lead}</p>
+        <Button as="a" href={claims.action.href} variant="primary" size="large">{claims.action.label}</Button>
+      </div>
+      <p class="opening">{claims.opening}</p>
+    </section>
+    <section class="points">
+      <div class="row">
+        {
+          claims.points.map((point) => (
+            <div class="point">
+              <h2>{point.title}</h2>
+              <p>{point.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+    <Separator ornamental={false} />
+  </div>
+</Base>

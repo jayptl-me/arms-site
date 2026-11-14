@@ -1,0 +1,167 @@
+/* Copied from UIFoundry packages/react/tooltip/tooltip.css at commit c2c6b490e422e8a63739408a21e3c312b55ade34.
+ * MIT licence, see src/ui/NOTICE.md. Local changes: none. */
+/* Tooltip · Stillstate · a short hint for a control, shown on hover or focus. */
+
+.ss-tooltip {
+  position: relative;
+  display: inline-block;
+  --ss-tooltip-gap: var(--space-2);
+  --ss-tooltip-margin: var(--space-4);
+}
+
+.ss-tooltip__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-line-control);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-instant) var(--ease-standard);
+}
+
+/* Muted is the one colour exemption a disabled control is allowed to take; the hover rule is
+   guarded so a disabled trigger never takes the sunken surface. */
+.ss-tooltip__trigger:not(:disabled):hover,
+.ss-tooltip__trigger[data-shown="true"] {
+  background: var(--color-sunken);
+}
+
+.ss-tooltip__trigger:disabled {
+  color: var(--color-ink-muted);
+  cursor: default;
+}
+
+.ss-tooltip__trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Icon-only trigger: the tooltip adds context, it never replaces an accessible name. */
+.ss-tooltip__trigger--icon {
+  min-inline-size: var(--target-min);
+  padding-inline: var(--space-3);
+  justify-content: center;
+}
+
+/* The surface anchors below the trigger as the no-script fallback; the script resolves the
+   requested placement with collision handling and writes the winner back to data-placement.
+   It is the solid tone the system uses for a dark-on-light inversion, so the hint reads as
+   an overlay rather than as another card. */
+.ss-tooltip__surface {
+  position: absolute;
+  z-index: var(--z-overlay);
+  inset-inline-start: 0;
+  top: calc(100% + var(--ss-tooltip-gap));
+  /* The bubble is as wide as its sentence, never as wide as the trigger it describes; the cap
+     is what makes a long hint wrap to two or three lines instead of a tall narrow column. */
+  inline-size: max-content;
+  max-inline-size: 22ch;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--color-ink);
+  color: var(--color-surface);
+  font-family: var(--font-ui);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  letter-spacing: var(--type-caption-track);
+  box-shadow: var(--shadow-overlay);
+  /* A tooltip is not hoverable and holds no interactive content; the pointer must pass through. */
+  pointer-events: none;
+  --ss-tooltip-enter-y: calc(-1 * var(--shift-sm));
+}
+
+.ss-tooltip__surface[data-placement="top"] {
+  top: auto;
+  bottom: calc(100% + var(--ss-tooltip-gap));
+  --ss-tooltip-enter-y: var(--shift-sm);
+}
+
+.ss-tooltip__surface[data-placement="start"] {
+  inset-inline-start: auto;
+  inset-inline-end: calc(100% + var(--ss-tooltip-gap));
+  top: 0;
+  --ss-tooltip-enter-y: calc(0 * var(--shift-sm));
+}
+
+.ss-tooltip__surface[data-placement="end"] {
+  inset-inline-start: calc(100% + var(--ss-tooltip-gap));
+  top: 0;
+  --ss-tooltip-enter-y: calc(0 * var(--shift-sm));
+}
+
+@keyframes ss-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--ss-tooltip-enter-y));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ss-tooltip-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.ss-tooltip[data-state="visible"] .ss-tooltip__surface {
+  animation: ss-tooltip-in var(--duration-instant) var(--ease-enter);
+}
+
+.ss-tooltip[data-state="closing"] .ss-tooltip__surface {
+  animation: ss-tooltip-out var(--duration-instant) var(--ease-exit);
+}
+
+/* Reduced motion: the settled state arrives as one opacity change with no transform;
+   --duration-reduced is the token the system defines for exactly this substitute. */
+@keyframes ss-tooltip-reduced-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ss-tooltip-reduced-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-tooltip[data-state="visible"] .ss-tooltip__surface {
+    animation-name: ss-tooltip-reduced-in;
+    animation-duration: var(--duration-reduced);
+  }
+
+  .ss-tooltip[data-state="closing"] .ss-tooltip__surface {
+    animation-name: ss-tooltip-reduced-out;
+    animation-duration: var(--duration-reduced);
+  }
+
+  .ss-tooltip__trigger {
+    transition: none;
+  }
+}

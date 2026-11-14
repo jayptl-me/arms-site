@@ -1,0 +1,177 @@
+/* Copied from UIFoundry packages/react/badge/badge.css at commit c2c6b490e422e8a63739408a21e3c312b55ade34.
+ * MIT licence, see src/ui/NOTICE.md. Local changes: none. */
+/* Stillstate Badge (React). Reads design-systems/stillstate/tokens.css; declares no literals.
+   Copied verbatim from the canonical artifact packages/html/badge/badge.css: same selectors,
+   same values, same class contract. Static component: no interaction, no motion, no script.
+   The demo chrome comes from design-systems/stillstate/demo.css and is not redeclared here. */
+
+.ss-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--color-sunken);
+  color: var(--color-ink);
+  font-family: var(--font-ui);
+  font-size: var(--type-caption-size);
+  font-weight: var(--weight-medium);
+  line-height: var(--type-caption-line);
+  letter-spacing: var(--type-caption-track);
+  white-space: nowrap;
+  vertical-align: baseline;
+  cursor: default;
+}
+
+.ss-badge__number {
+  display: inline-block;
+}
+
+/* Dot: decorative leading mark, only with a text label. A pseudo-element carries no
+   accessible text, which satisfies the hidden-from-assistive-technology rule.
+   No dot-size token exists in tokens.css; the size is relative to the badge's own
+   type step (0.5em), the nearest available scale. */
+.ss-badge--dot::before {
+  content: "";
+  flex: none;
+  inline-size: 0.5em;
+  block-size: 0.5em;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+/* Sizes. Small is the base (caption step). Medium is the sm step, the next declared
+   step up; the spec names only the caption step and is silent on the medium step. */
+.ss-badge--medium {
+  padding-inline: var(--space-3);
+  font-size: var(--type-sm-size);
+  line-height: var(--type-sm-line);
+  letter-spacing: var(--type-sm-track);
+}
+
+/* Soft is the base paint, per tone. Tinted surface, tone text.
+   Contrast pairs (computed from tokens.css values at the caption step):
+   neutral  ink on sunken                        ~14.1:1
+   accent   accent-strong on accent-soft         ~6.0:1
+   success  success on a 12% success tint        ~5.0:1
+   warning  warning on a 12% warning tint        ~4.8:1
+   danger   danger on a 12% danger tint          ~6.1:1
+   tokens.css carries a soft background only for accent (accent-soft); the
+   success, warning and danger soft backgrounds are derived with color-mix from
+   the tone token and --color-surface, never from a new literal. */
+.ss-badge--accent {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+.ss-badge--success {
+  background: color-mix(in oklab, var(--color-success) 12%, var(--color-surface));
+  color: var(--color-success);
+}
+
+.ss-badge--warning {
+  background: color-mix(in oklab, var(--color-warning) 12%, var(--color-surface));
+  color: var(--color-warning);
+}
+
+.ss-badge--danger {
+  background: color-mix(in oklab, var(--color-danger) 12%, var(--color-surface));
+  color: var(--color-danger);
+}
+
+/* Solid. Filled tone, light text.
+   neutral  surface on ink                       ~17.1:1
+   accent   on-accent on accent                  ~4.9:1
+   success  on-accent on success                 ~6.0:1
+   warning  on-accent on warning                 ~5.6:1
+   danger   on-accent on danger                 ~7.4:1 */
+.ss-badge--solid {
+  background: var(--color-ink);
+  color: var(--color-surface);
+}
+
+.ss-badge--solid.ss-badge--accent {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.ss-badge--solid.ss-badge--success {
+  background: var(--color-success);
+  color: var(--color-on-accent);
+}
+
+.ss-badge--solid.ss-badge--warning {
+  background: var(--color-warning);
+  color: var(--color-on-accent);
+}
+
+.ss-badge--solid.ss-badge--danger {
+  background: var(--color-danger);
+  color: var(--color-on-accent);
+}
+
+/* Outline. Tone border, tone text on the page surface. The accent text steps to
+   accent-strong because the base accent on canvas computes ~4.6:1, too close to
+   the 4.5:1 floor; accent-strong on canvas computes ~7.0:1.
+   neutral  ink on canvas                        ~17.0:1
+   accent   accent-strong on canvas              ~7.0:1
+   success  success on canvas                    ~5.6:1
+   warning  warning on canvas                    ~5.2:1
+   danger   danger on canvas                     ~7.3:1 */
+.ss-badge--outline {
+  border-color: var(--color-line-strong);
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.ss-badge--outline.ss-badge--accent {
+  border-color: var(--color-accent);
+  color: var(--color-accent-strong);
+}
+
+.ss-badge--outline.ss-badge--success {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.ss-badge--outline.ss-badge--warning {
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+
+.ss-badge--outline.ss-badge--danger {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* Count badge: control radius instead of the pill, per the layout rule. */
+.ss-badge--count {
+  border-radius: var(--radius-control);
+}
+
+/* Ring for a count sitting over other content, e.g. at the corner of an icon
+   button. The ring is in the surface tone; the caller positions the badge.
+   No ring-width token exists; --space-1 is the nearest declared step. */
+.ss-badge--ring {
+  box-shadow: 0 0 0 var(--space-1) var(--color-surface);
+}
+
+/* Screen-reader-only utility, copied verbatim. The component ships standalone:
+   a consumer imports badge.css without the demo chrome, so badge.css carries
+   its own copy instead of depending on demo.css being present. */
+.ss-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

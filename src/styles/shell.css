@@ -1,0 +1,117 @@
+/* Page shell: structure only. The look is set later; these rules use the existing tokens. */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.section { padding-block: var(--section-gap); }
+main:focus { outline: none; }
+
+/* Skip link: hidden until focused, then above everything. */
+.skip-link {
+  position: absolute;
+  inset-block-start: var(--space-xs);
+  inset-inline-start: var(--space-xs);
+  z-index: var(--z-toast);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border: var(--rule-hair) solid var(--color-ink);
+  border-radius: var(--radius-control);
+  transform: translateY(-200%);
+}
+.skip-link:focus-visible { transform: none; }
+
+.announcement:empty { display: none; }
+
+.site-header__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-block: var(--space-md);
+}
+.wordmark {
+  font-family: var(--font-outlier);
+  font-weight: var(--display-weight);
+  font-size: var(--text-lg);
+  letter-spacing: var(--tracking-display);
+  text-decoration: none;
+  color: var(--color-ink);
+}
+.site-header__tools { display: flex; align-items: center; gap: var(--space-md); }
+
+/* Main navigation: a disclosure on narrow screens (W3C APG disclosure pattern), a plain list otherwise.
+ * Without script the list always shows and the toggle stays hidden. */
+.site-nav { display: flex; align-items: center; }
+.site-nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav__list a,
+.site-footer nav a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 24px;
+}
+.site-nav__list a[aria-current="page"] { text-decoration-thickness: 2px; }
+.site-nav__toggle {
+  display: none;
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-md);
+  border: var(--rule-hair) solid var(--color-line-control);
+  border-radius: var(--radius-control);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+@media (max-width: 40rem) {
+  .js .site-nav { flex-direction: column; align-items: flex-end; gap: var(--space-xs); }
+  .js .site-nav__toggle { display: inline-flex; align-items: center; }
+  .js .site-nav__list { flex-direction: column; align-items: flex-end; }
+  .js .site-nav__list[data-open="false"] { display: none; }
+  .site-nav__list a { min-block-size: var(--target-min); }
+}
+
+/* Theme switch: shown only when script can act on it. */
+.theme-switch { display: none; align-items: center; gap: var(--space-xs); }
+.js .theme-switch { display: inline-flex; }
+.theme-switch select {
+  min-block-size: var(--target-min);
+  padding-inline: var(--space-sm);
+  border: var(--rule-hair) solid var(--color-line-control);
+  border-radius: var(--radius-control);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding-block: var(--section-gap-s) var(--space-3xl);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+.site-footer .wordmark { color: var(--color-ink); }
+.site-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-block-start: var(--space-lg);
+}
+
+/* Long-form pages (privacy, terms). */
+.prose { padding-block: var(--space-xl) var(--section-gap-s); }
+.prose h2 { margin-top: var(--space-xl); }
+.prose p + p { margin-top: var(--space-md); }
+.prose nav { display: flex; flex-wrap: wrap; gap: var(--space-md); margin-block-start: var(--space-lg); }
+.prose footer { margin-block-start: var(--space-lg); }
+.muted { color: var(--color-muted); font-size: var(--text-sm); }
