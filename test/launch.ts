@@ -25,9 +25,11 @@ if (!html.includes("ss-button--primary")) {
   console.error("primary control is not the UIFoundry button");
   process.exit(1);
 }
-if (!html.includes("native Gmail connector: read, search, organize, draft, and send")) {
-  console.error("gmail claim missing");
-  process.exit(1);
+for (const phrase of ["Claude Code", "Connection map.", "GitHub", "Gmail", "Encrypted vault."]) {
+  if (!html.includes(phrase)) {
+    console.error("product claim missing: " + phrase);
+    process.exit(1);
+  }
 }
 if (!html.includes('href="/privacy"') || !html.includes('href="/terms"')) {
   console.error("legal links missing");

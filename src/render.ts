@@ -14,6 +14,7 @@ const css = [
   readFileSync(join(root, "src/tokens.css"), "utf8").trim(),
   readFileSync(join(root, "src/base.css"), "utf8").trim(),
   readFileSync(join(foundry, "button/button.css"), "utf8").trim(),
+  readFileSync(join(foundry, "badge/badge.css"), "utf8").trim(),
   readFileSync(join(foundry, "separator/separator.css"), "utf8").trim(),
   readFileSync(join(root, "src/page.css"), "utf8").trim(),
 ].join("\n\n");
@@ -24,8 +25,8 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Open-source tools for agents, on your machine.">
-<title>ARMS, a local-first AI agent gateway</title>
+<meta name="description" content="A local control plane for the tools your coding agents call.">
+<title>ARMS, a local gateway for coding agents</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>

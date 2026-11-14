@@ -47,6 +47,10 @@
   --type-sm-size: var(--text-sm); --type-sm-line: 1.4; --type-sm-track: 0;
   --type-body-size: var(--text-md); --type-body-line: 1.5; --type-body-track: 0;
   --type-body-lg-size: var(--text-lg); --type-body-lg-line: 1.4; --type-body-lg-track: 0;
+  --space-1: var(--space-2xs);
+  --color-line-strong: var(--color-ink);
+  --color-warning: oklch(0.55 0.12 75);
+  --type-caption-size: var(--text-xs); --type-caption-line: 1.3; --type-caption-track: 0;
 }
 @media (max-width: 60rem) { :root { --gutter: 24px; --section-gap-s: 72px; --section-gap: 96px; --section-gap-l: 120px; } }
 @media (max-width: 40rem) { :root { --gutter: 16px; --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --gap-columns: 16px; } }
