@@ -16,14 +16,75 @@ import { claims } from "../claims.ts";
         <p class="lead">{claims.lead}</p>
         <Button as="a" href={claims.action.href} variant="primary" size="large">{claims.action.label}</Button>
       </div>
-      <p class="opening">{claims.opening}</p>
+      <div class="agents">
+        <p>{claims.harnessLead}</p>
+        <div class="chips">
+          {claims.harnesses.map((harness) => (
+            <span class="chip">{harness}</span>
+          ))}
+        </div>
+        <p class="opening">{claims.opening}</p>
+      </div>
     </section>
     <section class="points">
+      <h2>What it does</h2>
       <div class="row">
         {
-          claims.points.map((point) => (
+          claims.does.map((point) => (
             <div class="point">
-              <h2>{point.title}</h2>
+              <h3>{point.title}</h3>
+              <p>{point.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+    <section class="points">
+      <h2>Control plane</h2>
+      <div class="row">
+        {
+          claims.plane.map((point) => (
+            <div class="point">
+              <h3>{point.title}</h3>
+              <p>{point.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+    <section class="points">
+      <h2>Before a call goes out</h2>
+      <div class="row">
+        {
+          claims.decisions.map((point) => (
+            <div class="point">
+              <h3>{point.title}</h3>
+              <p>{point.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+    <section class="points">
+      <h2>Native connectors</h2>
+      <div class="row">
+        {
+          claims.connectors.map((item) => (
+            <div class="point">
+              <h3>{item.name}</h3>
+              <p>{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+    <section class="points">
+      <h2>Still on your machine</h2>
+      <div class="row">
+        {
+          claims.local.map((point) => (
+            <div class="point">
+              <h3>{point.title}</h3>
               <p>{point.body}</p>
             </div>
           ))
