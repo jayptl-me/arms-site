@@ -18,7 +18,7 @@ gate() { # name, command...
 
 gate install bun install --frozen-lockfile || { echo "GRADE exit=97 (install failed: NOT RUN)"; exit 97; }
 gate sibling-free bash -c '! grep -rnE "(\.\./)+UIFoundry|UIFoundry/packages" src test scripts astro.config.mjs --include=*.ts --include=*.tsx --include=*.astro --include=*.mjs'
-gate lint bunx oxlint --deny-warnings
+gate lint bun x oxlint --deny-warnings
 gate types bun run check
 gate build bun run build
 gate test bun run test
@@ -26,6 +26,7 @@ gate a11y bun run a11y
 gate budget bun run budget
 gate sd bun scripts/structured-data.ts
 gate links bun scripts/links.ts
+gate perf bun scripts/perf.ts
 gate negative bash scripts/negative-controls.sh
 echo "GRADE exit=$fails"
 exit "$fails"

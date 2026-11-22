@@ -67,7 +67,7 @@ for (const page of PAGES) {
         for (const e of l.getEntries() as any[])
           if ((window as any).__m.tapT > 0 && e.startTime >= (window as any).__m.tapT)
             (window as any).__m.inp = Math.max((window as any).__m.inp, e.duration);
-      }).observe({ type: "event", buffered: true, durationThreshold: 16 });
+      }).observe({ type: "event", buffered: true, durationThreshold: 16 } as PerformanceObserverInit);
     });
     await pg.goto(base + page, { waitUntil: "networkidle" });
     await pg.waitForTimeout(400);
