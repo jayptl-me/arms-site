@@ -74,7 +74,7 @@ export function Tooltip({
   delay = DELAY_FALLBACK,
   disabled = false,
   open,
-  onOpenChange,
+  onOpenChange: _onOpenChange,
   onOpen,
   onClose,
   triggerRef,
