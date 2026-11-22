@@ -1,0 +1,146 @@
+/* Look-round previews only. Tokens from tokens.css; no new colour is invented here.
+   Variant A "live wire" = Rethink Sans + Inter, request-trace hero, compact.
+   Variant B "the map"  = Space Grotesk + Inter, connection-map hero, medium.
+   Variant C "one gateway" = Fraunces + Inter, drawn-diagram hero, sparse. */
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-latin.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+main { display: block; }
+
+/* ---------- shared hero furniture ---------- */
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: var(--display-weight);
+  letter-spacing: var(--tracking-display);
+  line-height: 1.04;
+  margin: 0 0 var(--space-lg);
+  color: var(--color-ink);
+}
+.hero .lead { font-size: var(--text-lead); color: var(--color-ink-2); margin: 0 0 var(--space-md); }
+.hero .sub { font-size: var(--text-md); color: var(--color-muted); margin: 0 0 var(--space-xl); max-width: 44ch; }
+
+.btn-row { display: flex; gap: var(--space-sm); align-items: center; flex-wrap: wrap; }
+.btn {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-control);
+  font: 500 var(--text-sm)/1.4 var(--font-body);
+  text-decoration: none;
+  border: var(--rule-hair) solid transparent;
+  transition: transform 350ms cubic-bezier(0.34, 1.4, 0.4, 1), background-color var(--dur-short) var(--ease-out);
+}
+.btn:active { transform: scale(0.96); transition-duration: var(--dur-micro); }
+.btn.primary { background: var(--color-accent); color: var(--color-accent-ink); }
+.btn.ghost { color: var(--color-ink); border-color: var(--color-rule); background: transparent; }
+.btn.ghost:hover { background: var(--color-paper-2); }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:active { transform: none; } }
+
+figure { margin: 0; }
+figcaption {
+  font: 500 var(--text-xs)/1.4 var(--font-body);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.look-strip { padding: var(--space-2xl) 0; border-top: var(--rule-hair) solid var(--color-rule); }
+.look-strip p { color: var(--color-muted); margin: 0 0 var(--space-md); }
+.harnesses { display: flex; gap: var(--space-md) var(--space-lg); list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+.harnesses li { color: var(--color-ink-2); font-size: var(--text-md); }
+
+/* ---------- A: live wire (compact) ---------- */
+.hero-a {
+  display: grid; grid-template-columns: 1fr; gap: var(--space-xl);
+  padding: var(--space-3xl) 0 var(--space-2xl);
+}
+@media (min-width: 900px) {
+  .hero-a { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; padding-top: var(--space-2xl); }
+}
+.hero-a h1 { font-family: var(--font-outlier); font-weight: 560; }
+.trace {
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-2);
+  padding: var(--space-md) var(--space-md) var(--space-sm);
+}
+.trace ul { list-style: none; margin: 0; padding: 0; }
+.trace li {
+  display: grid;
+  grid-template-columns: minmax(0, 15ch) minmax(0, 1fr) auto 4ch;
+  gap: var(--space-sm);
+  padding: var(--space-2xs) 0;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: var(--text-xs);
+  border-top: var(--rule-hair) solid var(--color-rule);
+  white-space: nowrap; overflow: hidden;
+}
+.trace li:first-child { border-top: 0; }
+.t-harness { color: var(--color-muted); }
+.t-call { color: var(--color-ink); }
+.t-verdict.ok { color: var(--color-success); }
+.t-verdict.no { color: var(--color-error); }
+.t-ms { color: var(--color-muted); text-align: right; }
+
+/* ---------- B: the map (medium) ---------- */
+.hero-b { padding: var(--space-4xl) 0 var(--space-3xl); max-width: 52rem; }
+.hero-b h1 { font-family: "Space Grotesk", var(--font-body); font-weight: 500; letter-spacing: -0.01em; }
+.hero-b .btn-row { margin-bottom: var(--space-2xl); }
+.map {
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-2);
+  padding: var(--space-lg);
+}
+.map table { width: 100%; border-collapse: collapse; }
+.map th, .map td {
+  text-align: left; padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  font-weight: 500;
+}
+.map thead th { color: var(--color-muted); font-size: var(--text-sm); font-weight: 500; }
+.map tbody th { color: var(--color-ink); font-size: var(--text-md); }
+.map tbody tr:last-child th, .map tbody tr:last-child td { border-bottom: 0; }
+.cell {
+  display: inline-block; min-width: 5ch;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: var(--text-xs);
+  padding: 2px var(--space-xs);
+  border-radius: var(--radius-pill);
+  border: var(--rule-hair) solid var(--color-rule);
+}
+.cell.on { color: var(--color-success); border-color: var(--color-success); }
+.cell.off { color: var(--color-muted); }
+
+/* ---------- C: one gateway (sparse) ---------- */
+.hero-c { padding: calc(var(--space-4xl) + var(--space-xl)) 0 var(--space-4xl); }
+.hero-c h1 { font-family: "Fraunces", var(--font-body); font-weight: 480; letter-spacing: -0.015em; font-size: calc(var(--text-display) * 1.08); }
+.hero-c .lead { max-width: 40ch; }
+.hero-c .btn-row { margin-bottom: var(--space-3xl); }
+.gate svg { width: 100%; height: auto; display: block; }
+.gate .node rect { fill: var(--color-paper-2); stroke: var(--color-rule); stroke-width: 1; }
+.gate .node text { fill: var(--color-ink); font-family: var(--font-body); font-size: 13px; font-weight: 500; }
+.gate .node.core rect { fill: var(--color-paper-3); stroke: var(--color-accent); }
+.gate .core-name { font-size: 17px; font-weight: 600; }
+.gate .core-sub { fill: var(--color-muted); font-size: 11px; font-weight: 400; }
+.gate .edge path { fill: none; stroke: var(--color-muted); stroke-width: 1.25; }
+.gate .edge-tag text { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; }
+.gate .edge-tag .ok { fill: var(--color-success); }
+.gate .edge-tag .no { fill: var(--color-error); }

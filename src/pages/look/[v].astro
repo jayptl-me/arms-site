@@ -1,0 +1,139 @@
+---
+import Base from "../../layouts/Base.astro";
+import "../../styles/look.css";
+import { claims } from "../../claims";
+
+export function getStaticPaths() {
+  return [{ params: { v: "a" } }, { params: { v: "b" } }, { params: { v: "c" } }];
+}
+const { v } = Astro.params;
+
+/* Real request-log entries shaped like the live audit: harness -> connector.tool,
+   the policy verdict, and the call time. Names and verdicts are the product's own. */
+const trace = [
+  { harness: "claude-code", call: "gmail.list_threads", verdict: "ALLOWED", ms: "84" },
+  { harness: "cursor", call: "github.create_pull_request", verdict: "DENIED_TOOL", ms: "—" },
+  { harness: "windsurf", call: "plane.create_work_item", verdict: "ALLOWED", ms: "121" },
+  { harness: "opencode", call: "slack.post_message", verdict: "RATE_LIMITED_TOOL", ms: "—" },
+  { harness: "claude-desktop", call: "arms.get_status", verdict: "ALLOWED", ms: "3" },
+  { harness: "claude-code", call: "github.list_workflow_runs", verdict: "ALLOWED", ms: "97" },
+];
+
+const mapRows = [
+  { name: "Claude Code", cells: [1, 1, 0, 1, 1] },
+  { name: "Cursor", cells: [1, 0, 0, 1, 0] },
+  { name: "Windsurf", cells: [1, 1, 1, 1, 0] },
+  { name: "OpenCode", cells: [0, 1, 1, 0, 0] },
+  { name: "Claude Desktop", cells: [1, 1, 0, 0, 1] },
+];
+const mapCols = ["Gmail", "GitHub", "Slack", "Plane", "YardA"];
+---
+
+<Base title="ARMS" description={claims.lead}>
+  <main data-look={v} class="container">
+    {v === "a" && (
+      <section class="hero hero-a">
+        <div class="hero-a-copy">
+          <h1>{claims.headline}</h1>
+          <p class="lead">{claims.lead}</p>
+          <p class="sub">{claims.opening}</p>
+          <div class="btn-row">
+            <a class="btn primary" href={claims.action.href}>{claims.action.label}</a>
+            <a class="btn ghost" href="#trace">Read the log</a>
+          </div>
+        </div>
+        <figure class="trace" id="trace" aria-label="A policy request log from the gateway">
+          <figcaption>Policy log</figcaption>
+          <ul>
+            {trace.map((t) => (
+              <li>
+                <span class="t-harness">{t.harness}</span>
+                <span class="t-call">{t.call}</span>
+                <span class={`t-verdict ${t.verdict === "ALLOWED" ? "ok" : "no"}`}>{t.verdict}</span>
+                <span class="t-ms">{t.ms}</span>
+              </li>
+            ))}
+          </ul>
+        </figure>
+      </section>
+    )}
+
+    {v === "b" && (
+      <section class="hero hero-b">
+        <h1>{claims.headline}</h1>
+        <p class="lead">{claims.lead}</p>
+        <div class="btn-row">
+          <a class="btn primary" href={claims.action.href}>{claims.action.label}</a>
+          <a class="btn ghost" href="#map">See the map</a>
+        </div>
+        <figure class="map" id="map" aria-label="Which harness may reach which connector">
+          <figcaption>Connection map</figcaption>
+          <table>
+            <thead>
+              <tr><th></th>{mapCols.map((c) => <th>{c}</th>)}</tr>
+            </thead>
+            <tbody>
+              {mapRows.map((r) => (
+                <tr>
+                  <th>{r.name}</th>
+                  {r.cells.map((c) => (
+                    <td><span class={c ? "cell on" : "cell off"}>{c ? "allow" : "off"}</span></td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </figure>
+      </section>
+    )}
+
+    {v === "c" && (
+      <section class="hero hero-c">
+        <h1>{claims.headline}</h1>
+        <p class="lead">{claims.lead}</p>
+        <div class="btn-row">
+          <a class="btn primary" href={claims.action.href}>{claims.action.label}</a>
+          <a class="btn ghost" href="#gate">See the path</a>
+        </div>
+        <figure class="gate" id="gate" aria-label="Calls from your agents pass through the gateway to the services you use">
+          <svg viewBox="0 0 720 260" role="img" aria-labelledby="gate-t">
+            <title id="gate-t">Agents on the left, ARMS in the middle deciding each call, connectors on the right</title>
+            <g class="node">
+              <rect x="16" y="40" width="128" height="30" rx="6"/><text x="80" y="59" text-anchor="middle">Claude Code</text>
+              <rect x="16" y="115" width="128" height="30" rx="6"/><text x="80" y="134" text-anchor="middle">Cursor</text>
+              <rect x="16" y="190" width="128" height="30" rx="6"/><text x="80" y="209" text-anchor="middle">Windsurf</text>
+            </g>
+            <g class="node core">
+              <rect x="300" y="95" width="120" height="70" rx="10"/>
+              <text x="360" y="124" text-anchor="middle" class="core-name">ARMS</text>
+              <text x="360" y="146" text-anchor="middle" class="core-sub">policy check</text>
+            </g>
+            <g class="node">
+              <rect x="576" y="40" width="128" height="30" rx="6"/><text x="640" y="59" text-anchor="middle">Gmail</text>
+              <rect x="576" y="115" width="128" height="30" rx="6"/><text x="640" y="134" text-anchor="middle">GitHub</text>
+              <rect x="576" y="190" width="128" height="30" rx="6"/><text x="640" y="209" text-anchor="middle">Slack</text>
+            </g>
+            <g class="edge">
+              <path d="M144 55 C 220 55 240 115 300 120"/>
+              <path d="M144 130 C 220 130 240 130 300 130"/>
+              <path d="M144 205 C 220 205 240 145 300 140"/>
+              <path d="M420 115 C 500 110 500 60 576 55"/>
+              <path d="M420 130 C 500 130 500 130 576 130"/>
+              <path d="M420 145 C 500 150 500 200 576 205"/>
+            </g>
+            <g class="edge-tag">
+              <text x="222" y="80" class="ok">allowed</text>
+              <text x="500" y="100" class="ok">allowed</text>
+              <text x="500" y="190" class="no">denied</text>
+            </g>
+          </svg>
+        </figure>
+      </section>
+    )}
+
+    <section class="look-strip">
+      <p>{claims.harnessLead}</p>
+      <ul class="harnesses">{claims.harnesses.map((h) => <li>{h}</li>)}</ul>
+    </section>
+  </main>
+</Base>
