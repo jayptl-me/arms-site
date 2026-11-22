@@ -118,12 +118,15 @@ try {
       }
     }
 
-    // aria-current marks the current page in the header.
+    // aria-current marks the current page in the header. noindex pages are not
+    // in the nav, so no header link may claim current on them.
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto(base + path);
+    const noindex = (await page.locator('meta[name="robots"][content*="noindex"]').count()) > 0;
     const current = await page.locator('.site-header [aria-current="page"]').count();
-    if (current !== 1) fail(`${path}: ${current} header links carry aria-current="page"`);
+    if (!noindex && current !== 1) fail(`${path}: ${current} header links carry aria-current="page"`);
+    if (noindex && current !== 0) fail(`${path}: unindexed page claims aria-current on a header link`);
     await context.close();
   }
 
