@@ -63,5 +63,10 @@ d=$(copy_dist sd); sed -i 's#"SoftwareApplication"#"SoftwareApplication","aggreg
 grep -q 'aggregateRating' "$d/index.html" || { echo "NEGATIVE sd plant failed"; missed=$((missed + 1)); }
 expect_fail sd bun scripts/structured-data.ts --dist "$d"
 
+# links: an internal href that points at a page that does not exist.
+d=$(copy_dist links); sed -i 's#href="/privacy"#href="/privacy-missing"#' "$d/index.html"
+grep -q 'privacy-missing' "$d/index.html" || { echo "NEGATIVE links plant failed"; missed=$((missed + 1)); }
+expect_fail links bun scripts/links.ts --dist "$d" --no-external
+
 echo "NEGATIVE missed=$missed"
 [ "$missed" -eq 0 ]
