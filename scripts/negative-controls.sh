@@ -53,5 +53,10 @@ expect_fail budget bun scripts/budget.ts --dist "$d"
 d=$(copy_dist thirdparty); sed -i 's#</head>#<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">&#' "$d/index.html"
 expect_fail third-party bun scripts/budget.ts --dist "$d"
 
+# a11y: an unindexed page that claims aria-current in the header nav.
+d=$(copy_dist a11y-noindex); sed -i 's#<a \([^>]*href="/privacy[^>]*\)>#<a \1 aria-current="page">#' "$d/parts/index.html"
+grep -q 'aria-current="page"' "$d/parts/index.html" || { echo "NEGATIVE a11y-noindex plant failed"; missed=$((missed + 1)); }
+expect_fail a11y-noindex bun scripts/a11y.ts --dist "$d"
+
 echo "NEGATIVE missed=$missed"
 [ "$missed" -eq 0 ]
