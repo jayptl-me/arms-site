@@ -6,9 +6,22 @@ import "../ui/button/button.css";
 import "../ui/separator/separator.css";
 import "../styles/home.css";
 import { claims } from "../claims.ts";
+
+const jsonld = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "ARMS",
+  url: "https://arms.whyknot.live",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "macOS, Linux",
+  license: "https://www.apache.org/licenses/LICENSE-2.0",
+  author: { "@type": "Organization", name: "WhyKnot", url: "https://whyknot.live" },
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
 ---
 
 <Base title="ARMS, a local-first AI agent gateway" description="Open-source tools for agents, on your machine.">
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonld)} />
   <div class="container">
     <section class="hero">
       <div class="intro">
