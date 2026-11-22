@@ -1,0 +1,137 @@
+---
+import Base from "../layouts/Base.astro";
+import { Button } from "../ui/button/button";
+import "../ui/button/button.css";
+import { Badge } from "../ui/badge/badge";
+import "../ui/badge/badge.css";
+import { Separator } from "../ui/separator/separator";
+import "../ui/separator/separator.css";
+import { Card } from "../ui/card/card";
+import "../ui/card/card.css";
+import { Table } from "../ui/table/table";
+import "../ui/table/table.css";
+import { Tabs } from "../ui/tabs/tabs";
+import "../ui/tabs/tabs.css";
+import { Accordion } from "../ui/accordion/accordion";
+import "../ui/accordion/accordion.css";
+import "../ui/dialog/dialog.css";
+import { Tooltip } from "../ui/tooltip/tooltip";
+import "../ui/tooltip/tooltip.css";
+import "../ui/menu/menu.css";
+import { DialogDemo, MenuDemo } from "../components/GalleryBits";
+---
+
+<Base title="ARMS parts gallery" description="Component states. Not indexed.">
+  <main class="container parts">
+    <h1>Parts</h1>
+    <p class="note">State gallery for review and captures. Every part renders every state it owns; no fake states.</p>
+
+    <section>
+      <h2>Button</h2>
+      <div class="row">
+        <Button client:load variant="primary">Primary</Button>
+        <Button client:load variant="secondary">Secondary</Button>
+        <Button client:load variant="quiet">Quiet</Button>
+        <Button client:load variant="danger">Danger</Button>
+        <Button client:load variant="primary" disabled>Disabled</Button>
+        <Button client:load variant="primary" loading>Loading</Button>
+      </div>
+      <div class="row">
+        <Button client:load size="small">Small</Button>
+        <Button client:load size="medium">Medium</Button>
+        <Button client:load size="large">Large</Button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Badge</h2>
+      <div class="row">
+        <Badge client:load tone="neutral">neutral</Badge>
+        <Badge client:load tone="accent">accent</Badge>
+        <Badge client:load tone="success">success</Badge>
+        <Badge client:load tone="warning">warning</Badge>
+        <Badge client:load tone="danger">danger</Badge>
+        <Badge client:load tone="accent" variant="solid">solid</Badge>
+        <Badge client:load tone="accent" variant="outline">outline</Badge>
+      </div>
+    </section>
+
+    <section>
+      <h2>Separator</h2>
+      <Separator client:load />
+    </section>
+
+    <section>
+      <h2>Card</h2>
+      <div class="row top">
+        <Card client:load title="A quiet card" description="Medium padding." padding="medium">Card body.</Card>
+        <Card client:load title="A larger card" description="Large padding." padding="large">Card body.</Card>
+      </div>
+    </section>
+
+    <section>
+      <h2>Table</h2>
+      <Table
+        client:load
+        caption="Recent calls through the gateway"
+        columns={[
+          { key: "harness", header: "Harness" },
+          { key: "call", header: "Last call" },
+          { key: "verdict", header: "Verdict" },
+        ]}
+        rows={[
+          { id: "r1", harness: "claude-code", call: "gmail.list_threads", verdict: "ALLOWED" },
+          { id: "r2", harness: "cursor", call: "github.create_pull_request", verdict: "DENIED_TOOL" },
+        ]}
+      />
+    </section>
+
+    <section>
+      <h2>Tabs</h2>
+      <Tabs
+        client:load
+        tabs={[
+          { value: "one", label: "First", panel: "First tab panel." },
+          { value: "two", label: "Second", panel: "Second tab panel." },
+          { value: "three", label: "Disabled", disabled: true },
+        ]}
+      />
+    </section>
+
+    <section>
+      <h2>Accordion</h2>
+      <Accordion
+        client:load
+        items={[
+          { value: "a", heading: "What ARMS routes", content: "Calls from your agents to the services you use." },
+          { value: "b", heading: "What it decides", content: "Every call passes a policy check first." },
+        ]}
+      />
+    </section>
+
+    <section>
+      <h2>Dialog</h2>
+      <DialogDemo client:load />
+    </section>
+
+    <section>
+      <h2>Tooltip</h2>
+      <Tooltip client:load content="The verdict for this call" placement="top" triggerContent="Hover me" />
+    </section>
+
+    <section>
+      <h2>Menu</h2>
+      <MenuDemo client:load />
+    </section>
+  </main>
+</Base>
+
+<style>
+  .parts { padding: var(--space-2xl) 0 var(--space-4xl); }
+  .parts h1 { font-size: var(--text-2xl); margin: 0 0 var(--space-xs); }
+  .parts .note { color: var(--color-muted); margin: 0 0 var(--space-2xl); }
+  .parts section { padding: var(--space-xl) 0; border-top: var(--rule-hair) solid var(--color-rule); }
+  .parts h2 { font-size: var(--text-lg); margin: 0 0 var(--space-md); }
+  .row { display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap; }
+  .row.top { align-items: flex-start; }
+</style>
