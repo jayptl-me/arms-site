@@ -1,25 +1,110 @@
 .hero {
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-xl);
-  padding-block: var(--space-md) var(--space-lg);
+  padding: var(--space-3xl) 0 var(--space-2xl);
+}
+@media (min-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; }
 }
 .intro {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-lg);
+  gap: var(--space-md);
 }
 .hero h1 {
-  max-width: 12ch;
+  max-width: 14ch;
+  font-family: var(--font-outlier);
+  font-weight: 560;
   font-size: var(--text-display);
   line-height: 1.02;
+  margin: 0;
 }
-.opening { max-width: 62ch; }
+.hero .lead { font-size: var(--text-lead); color: var(--color-ink-2); margin: 0; }
+.hero .sub { font-size: var(--text-md); color: var(--color-muted); margin: 0; max-width: 44ch; }
+.harnesslead { color: var(--color-muted); margin: var(--space-md) 0 0; font-size: var(--text-sm); }
 .chips { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); }
 .chip { color: var(--color-ink-2); font-size: var(--text-md); }
+
+.btn-row { display: flex; gap: var(--space-sm); align-items: center; flex-wrap: wrap; margin-top: var(--space-xs); }
+.btn {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-control);
+  font: 500 var(--text-sm)/1.4 var(--font-body);
+  text-decoration: none;
+  border: var(--rule-hair) solid transparent;
+  transition: transform 350ms cubic-bezier(0.34, 1.4, 0.4, 1), background-color var(--dur-short) var(--ease-out);
+}
+.btn:active { transform: scale(0.96); transition-duration: var(--dur-micro); }
+.btn.ghost { color: var(--color-ink); border-color: var(--color-rule); background: transparent; }
+.btn.ghost:hover { background: var(--color-paper-2); }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:active { transform: none; } }
+
+figure { margin: 0; }
+figcaption {
+  font: 500 var(--text-xs)/1.4 var(--font-body);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  margin-bottom: var(--space-sm);
+}
+
+/* the live wire: policy request log */
+.trace {
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-2);
+  padding: var(--space-md) var(--space-md) var(--space-sm);
+}
+.trace ul { list-style: none; margin: 0; padding: 0; }
+.trace li {
+  display: grid;
+  grid-template-columns: minmax(0, 15ch) minmax(0, 1fr) auto 4ch;
+  gap: var(--space-sm);
+  padding: var(--space-2xs) 0;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: var(--text-xs);
+  border-top: var(--rule-hair) solid var(--color-rule);
+  white-space: nowrap; overflow: hidden;
+}
+.trace li:first-child { border-top: 0; }
+.t-harness { color: var(--color-muted); }
+.t-call { color: var(--color-ink); overflow: hidden; text-overflow: ellipsis; }
+.t-verdict.ok { color: var(--color-success); }
+.t-verdict.no { color: var(--color-error); }
+.t-ms { color: var(--color-muted); text-align: right; }
+
+/* the map: which harness may reach which connector */
+.map {
+  max-width: 52rem;
+  margin-bottom: var(--space-2xl);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-2);
+  padding: var(--space-lg);
+  overflow-x: auto;
+}
+.map table { width: 100%; border-collapse: collapse; }
+.map th, .map td {
+  text-align: left; padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  font-weight: 500;
+}
+.map thead th { color: var(--color-muted); font-size: var(--text-sm); font-weight: 500; }
+.map tbody th { color: var(--color-ink); font-size: var(--text-md); }
+.map tbody tr:last-child th, .map tbody tr:last-child td { border-bottom: 0; }
+.cell {
+  display: inline-block; min-width: 5ch;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: var(--text-xs);
+  padding: 2px var(--space-xs);
+  border-radius: var(--radius-pill);
+  border: var(--rule-hair) solid var(--color-rule);
+}
+.cell.on { color: var(--color-success); border-color: var(--color-success); }
+.cell.off { color: var(--color-muted); }
+
 .points { padding-block: var(--section-gap); }
 .row {
   display: grid;

@@ -17,7 +17,7 @@ function text(pattern: RegExp, label: string): string {
 const headline = text(/<h1>([^<]+)<\/h1>/, "headline");
 const sentence = text(/<p class="lead">([^<]+)<\/p>/, "sentence");
 const action = text(
-  /<a class="ss-button[^"]*ss-button--primary[^"]*" href="mailto:jayptl0919@gmail.com"[^>]*>\s*<span class="ss-button__label">([^<]*)<\/span>/,
+  /<a class="ss-button[^"]*ss-button--primary[^"]*" href="https:\/\/github\.com\/jayptl-me\/arms-site\/issues"[^>]*>\s*<span class="ss-button__label">([^<]*)<\/span>/,
   "action",
 );
 

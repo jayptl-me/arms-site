@@ -77,8 +77,8 @@ export const claims = {
     },
   ],
   action: {
-    label: "Contact",
-    href: "mailto:jayptl0919@gmail.com",
+    label: "Open an issue",
+    href: "https://github.com/jayptl-me/arms-site/issues",
   },
   operator: "Operated by Jay Patel",
 } as const;

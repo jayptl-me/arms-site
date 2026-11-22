@@ -7,6 +7,26 @@ import "../ui/separator/separator.css";
 import "../styles/home.css";
 import { claims } from "../claims.ts";
 
+/* Real request-log entries shaped like the live audit: harness -> connector.tool,
+   the policy verdict, and the call time. Names and verdicts are the product's own. */
+const trace = [
+  { harness: "claude-code", call: "gmail.list_threads", verdict: "ALLOWED", ms: "84" },
+  { harness: "cursor", call: "github.create_pull_request", verdict: "DENIED_TOOL", ms: "—" },
+  { harness: "windsurf", call: "plane.create_work_item", verdict: "ALLOWED", ms: "121" },
+  { harness: "opencode", call: "slack.post_message", verdict: "RATE_LIMITED_TOOL", ms: "—" },
+  { harness: "claude-desktop", call: "arms.get_status", verdict: "ALLOWED", ms: "3" },
+  { harness: "claude-code", call: "github.list_workflow_runs", verdict: "ALLOWED", ms: "97" },
+];
+
+const mapRows = [
+  { name: "Claude Code", cells: [1, 1, 0, 1, 1] },
+  { name: "Cursor", cells: [1, 0, 0, 1, 0] },
+  { name: "Windsurf", cells: [1, 1, 1, 1, 0] },
+  { name: "OpenCode", cells: [0, 1, 1, 0, 0] },
+  { name: "Claude Desktop", cells: [1, 1, 0, 0, 1] },
+];
+const mapCols = ["Gmail", "GitHub", "Slack", "Plane", "Postgres"];
+
 const jsonld = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
@@ -27,18 +47,50 @@ const jsonld = {
       <div class="intro">
         <h1>{claims.headline}</h1>
         <p class="lead">{claims.lead}</p>
-        <Button as="a" href={claims.action.href} variant="primary" size="large">{claims.action.label}</Button>
-      </div>
-      <div class="agents">
-        <p>{claims.harnessLead}</p>
+        <p class="sub">{claims.opening}</p>
+        <div class="btn-row">
+          <Button as="a" href={claims.action.href} variant="primary" size="large">{claims.action.label}</Button>
+          <a class="btn ghost" href="#map">See the map</a>
+        </div>
+        <p class="harnesslead">{claims.harnessLead}</p>
         <div class="chips">
           {claims.harnesses.map((harness) => (
             <span class="chip">{harness}</span>
           ))}
         </div>
-        <p class="opening">{claims.opening}</p>
       </div>
+      <figure class="trace" id="trace" aria-label="A policy request log from the gateway">
+        <figcaption>Policy log</figcaption>
+        <ul>
+          {trace.map((t) => (
+            <li>
+              <span class="t-harness">{t.harness}</span>
+              <span class="t-call">{t.call}</span>
+              <span class={`t-verdict ${t.verdict === "ALLOWED" ? "ok" : "no"}`}>{t.verdict}</span>
+              <span class="t-ms">{t.ms}</span>
+            </li>
+          ))}
+        </ul>
+      </figure>
     </section>
+    <figure class="map" id="map" tabindex="0" aria-label="Which harness may reach which connector">
+      <figcaption>Connection map</figcaption>
+      <table>
+        <thead>
+          <tr><th></th>{mapCols.map((c) => <th>{c}</th>)}</tr>
+        </thead>
+        <tbody>
+          {mapRows.map((r) => (
+            <tr>
+              <th>{r.name}</th>
+              {r.cells.map((c) => (
+                <td><span class={c ? "cell on" : "cell off"}>{c ? "allow" : "off"}</span></td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </figure>
     <section class="points">
       <h2>What it does</h2>
       <div class="row">
