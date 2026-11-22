@@ -115,7 +115,7 @@ const mapCols = ["Gmail", "GitHub", "Slack", "Plane", "Postgres"];
           <a class="btn primary" href={claims.action.href}>{claims.action.label}</a>
           <a class="btn ghost" href="#gate">See the path</a>
         </div>
-        <figure class="gate" id="gate" aria-label="Calls from your agents pass through the gateway to the services you use">
+        <figure class="gate" id="gate" tabindex="0" aria-label="Calls from your agents pass through the gateway to the services you use">
           <svg viewBox="0 0 720 260" role="img" aria-labelledby="gate-t">
             <title id="gate-t">Agents on the left, ARMS in the middle deciding each call, connectors on the right</title>
             <g class="node">
