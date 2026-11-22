@@ -18,6 +18,8 @@
   line-height: 1.02;
 }
 .opening { max-width: 62ch; }
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); }
+.chip { color: var(--color-ink-2); font-size: var(--text-md); }
 .points { padding-block: var(--section-gap); }
 .row {
   display: grid;

@@ -84,7 +84,7 @@ figcaption {
 }
 .trace li:first-child { border-top: 0; }
 .t-harness { color: var(--color-muted); }
-.t-call { color: var(--color-ink); }
+.t-call { color: var(--color-ink); overflow: hidden; text-overflow: ellipsis; }
 .t-verdict.ok { color: var(--color-success); }
 .t-verdict.no { color: var(--color-error); }
 .t-ms { color: var(--color-muted); text-align: right; }
@@ -124,7 +124,8 @@ figcaption {
 .hero-c h1 { font-family: "Fraunces", var(--font-body); font-weight: 480; letter-spacing: -0.015em; font-size: calc(var(--text-display) * 1.08); }
 .hero-c .lead { max-width: 40ch; }
 .hero-c .btn-row { margin-bottom: var(--space-3xl); }
-.gate svg { width: 100%; height: auto; display: block; }
+.gate { overflow-x: auto; }
+.gate svg { width: 100%; min-width: 600px; height: auto; display: block; }
 .gate .node rect { fill: var(--color-paper-2); stroke: var(--color-rule); stroke-width: 1; }
 .gate .node text { fill: var(--color-ink); font-family: var(--font-body); font-size: 13px; font-weight: 500; }
 .gate .node.core rect { fill: var(--color-paper-3); stroke: var(--color-accent); }
