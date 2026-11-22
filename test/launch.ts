@@ -60,6 +60,13 @@ if (!securityTxt.includes("Contact:") || !securityTxt.includes("Expires:")) {
   process.exit(1);
 }
 
+const homeHtml = readFileSync(join(dist, "index.html"), "utf8");
+const ld = homeHtml.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/);
+if (!ld || !JSON.parse(ld[1]) || JSON.parse(ld[1])["@type"] !== "SoftwareApplication" || "aggregateRating" in JSON.parse(ld[1])) {
+  console.error("home ld+json missing, unparseable, wrong type, or carries a rating");
+  process.exit(1);
+}
+
 for (const [page, heading] of [
   ["privacy", "ARMS Gmail — Privacy Policy"],
   ["terms", "ARMS — Terms of Service"],

@@ -24,6 +24,7 @@ gate build bun run build
 gate test bun run test
 gate a11y bun run a11y
 gate budget bun run budget
+gate sd bun scripts/structured-data.ts
 gate negative bash scripts/negative-controls.sh
 echo "GRADE exit=$fails"
 exit "$fails"

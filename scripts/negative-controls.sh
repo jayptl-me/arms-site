@@ -58,5 +58,10 @@ d=$(copy_dist a11y-noindex); sed -i 's#<a \([^>]*href="/privacy[^>]*\)>#<a \1 ar
 grep -q 'aria-current="page"' "$d/parts/index.html" || { echo "NEGATIVE a11y-noindex plant failed"; missed=$((missed + 1)); }
 expect_fail a11y-noindex bun scripts/a11y.ts --dist "$d"
 
+# sd: a planted aggregateRating inside the home ld+json block.
+d=$(copy_dist sd); sed -i 's#"SoftwareApplication"#"SoftwareApplication","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9"}#' "$d/index.html"
+grep -q 'aggregateRating' "$d/index.html" || { echo "NEGATIVE sd plant failed"; missed=$((missed + 1)); }
+expect_fail sd bun scripts/structured-data.ts --dist "$d"
+
 echo "NEGATIVE missed=$missed"
 [ "$missed" -eq 0 ]
