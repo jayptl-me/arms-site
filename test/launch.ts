@@ -54,6 +54,12 @@ if (!sitemap.includes("<loc>https://arms.whyknot.live/</loc>") || sitemap.includ
   process.exit(1);
 }
 
+const securityTxt = readFileSync(join(dist, ".well-known/security.txt"), "utf8");
+if (!securityTxt.includes("Contact:") || !securityTxt.includes("Expires:")) {
+  console.error("security.txt missing or lacks Contact/Expires");
+  process.exit(1);
+}
+
 for (const [page, heading] of [
   ["privacy", "ARMS Gmail — Privacy Policy"],
   ["terms", "ARMS — Terms of Service"],
