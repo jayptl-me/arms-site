@@ -36,7 +36,24 @@ if (!html.includes('href="/privacy"') || !html.includes('href="/terms"')) {
   process.exit(1);
 }
 
+if (!html.includes('rel="canonical" href="https://arms.whyknot.live/"')) {
+  console.error("canonical link missing on home");
+  process.exit(1);
+}
+
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
+const robots = readFileSync(join(dist, "robots.txt"), "utf8");
+if (!robots.includes("User-agent: *") || !robots.includes("Disallow: /look/")) {
+  console.error("robots.txt missing or preview routes crawlable");
+  process.exit(1);
+}
+
+const sitemap = readFileSync(join(dist, "sitemap-0.xml"), "utf8");
+if (!sitemap.includes("<loc>https://arms.whyknot.live/</loc>") || sitemap.includes("/look/") || sitemap.includes("/parts")) {
+  console.error("sitemap missing home or leaks preview routes");
+  process.exit(1);
+}
+
 for (const [page, heading] of [
   ["privacy", "ARMS Gmail — Privacy Policy"],
   ["terms", "ARMS — Terms of Service"],
