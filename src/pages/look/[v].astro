@@ -30,6 +30,26 @@ const mapCols = ["Gmail", "GitHub", "Slack", "Plane", "Postgres"];
 ---
 
 <Base title="ARMS" description={claims.lead} unindexed>
+  {v === "b" && (
+    <style slot="head" is:inline>
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("/fonts/space-grotesk-latin.woff2") format("woff2");
+        font-weight: 400 700;
+        font-display: swap;
+      }
+    </style>
+  )}
+  {v === "c" && (
+    <style slot="head" is:inline>
+      @font-face {
+        font-family: "Fraunces";
+        src: url("/fonts/fraunces-latin.woff2") format("woff2");
+        font-weight: 480;
+        font-display: swap;
+      }
+    </style>
+  )}
   <main data-look={v} class="container">
     {v === "a" && (
       <section class="hero hero-a">

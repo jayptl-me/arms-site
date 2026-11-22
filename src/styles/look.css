@@ -1,24 +1,14 @@
 /* Look-round previews only. Tokens from tokens.css; no new colour is invented here.
    Variant A "live wire" = Rethink Sans + Inter, request-trace hero, compact.
    Variant B "the map"  = Space Grotesk + Inter, connection-map hero, medium.
-   Variant C "one gateway" = Fraunces + Inter, drawn-diagram hero, sparse. */
+   Variant C "one gateway" = Fraunces + Inter, drawn-diagram hero, sparse.
+   Each variant's display face is declared in [v].astro so a variant only loads
+   the fonts it actually uses; JetBrains Mono is shared by all three figures. */
 
-@font-face {
-  font-family: "Space Grotesk";
-  src: url("/fonts/space-grotesk-latin.woff2") format("woff2");
-  font-weight: 400 700;
-  font-display: swap;
-}
 @font-face {
   font-family: "JetBrains Mono";
   src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
   font-weight: 400 700;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Fraunces";
-  src: url("/fonts/fraunces-latin.woff2") format("woff2");
-  font-weight: 300 700;
   font-display: swap;
 }
 
