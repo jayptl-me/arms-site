@@ -325,9 +325,11 @@
   padding: 3px var(--space-xs);
   border-radius: 5px;
 }
-.v.ok { color: var(--color-success); background: color-mix(in oklab, var(--color-success) 12%, transparent); }
-.v.no { color: var(--color-error); background: color-mix(in oklab, var(--color-error) 12%, transparent); }
-.v.warn { color: var(--color-warning); background: color-mix(in oklab, var(--color-warning) 14%, transparent); }
+/* Chip text is a darker shade of the status hue in light mode — the token
+   alone misses 4.5:1 on the tinted chip background (axe color-contrast). */
+.v.ok { color: light-dark(oklch(0.42 0.14 150), var(--color-success)); background: color-mix(in oklab, var(--color-success) 12%, transparent); }
+.v.no { color: light-dark(oklch(0.44 0.19 25), var(--color-error)); background: color-mix(in oklab, var(--color-error) 12%, transparent); }
+.v.warn { color: light-dark(oklch(0.44 0.11 70), var(--color-warning)); background: color-mix(in oklab, var(--color-warning) 14%, transparent); }
 
 /* ---------- the rest of home reuses home.css (.map, .points) ---------- */
 

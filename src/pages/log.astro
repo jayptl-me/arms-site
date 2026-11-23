@@ -31,7 +31,7 @@ const group = (v: string) =>
 const harnesses = [...new Set(rows.map((r) => r.h))];
 ---
 
-<Base title="ARMS — Policy log" description="Every call, every verdict: the gateway's audit surface." unindexed>
+<Base title="ARMS — Policy log" description="Every call, every verdict: the gateway's audit surface.">
   <div class="container">
     <section class="logpage">
       <h1>Policy log</h1>
@@ -68,7 +68,7 @@ const harnesses = [...new Set(rows.map((r) => r.h))];
         </div>
       </div>
 
-      <div class="logwrap">
+      <div class="logwrap" tabindex="0">
       <table class="logtable logtable--full">
         <thead>
           <tr><th scope="col">Harness</th><th scope="col">Call</th><th scope="col">Verdict</th><th scope="col">ms</th></tr>

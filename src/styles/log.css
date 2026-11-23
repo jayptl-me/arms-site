@@ -39,7 +39,7 @@
   font-size: var(--text-xs);
   color: var(--color-muted);
 }
-.v.info { color: var(--color-info); background: color-mix(in oklab, var(--color-info) 14%, transparent); }
+.v.info { color: light-dark(oklch(0.42 0.11 230), var(--color-info)); background: color-mix(in oklab, var(--color-info) 14%, transparent); }
 
 /* Filter chips */
 .filters {
