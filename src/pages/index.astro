@@ -159,6 +159,7 @@ const jsonld = {
       <div class="container">
         <h2>Every call lands in the log</h2>
         <p class="landing__lead">The call you followed is the newest row. Each entry keeps the harness, the tool, the verdict and the time it took.</p>
+        <div class="logwrap">
         <table class="logtable">
           <thead>
             <tr><th scope="col">Harness</th><th scope="col">Call</th><th scope="col">Verdict</th><th scope="col">ms</th></tr>
@@ -174,6 +175,7 @@ const jsonld = {
             ))}
           </tbody>
         </table>
+        </div>
         <p class="muted" style="margin-top: var(--space-md)"><a href="/log">Open the full policy log →</a></p>
       </div>
     </section>

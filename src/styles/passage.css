@@ -5,6 +5,9 @@
 
 /* ---------- the journey frame ---------- */
 .journey { position: relative; }
+/* The run carries the rail: without positioning here the absolute rail
+   anchors to .journey and slashes the hero. */
+.journey-run { position: relative; }
 
 /* The rail the call rides: centred on desktop, hugging the left edge on
    narrow screens, stations punched at each gate's line. */
@@ -337,6 +340,10 @@
   .capsule { top: auto; bottom: var(--space-md); transform: translate(-50%, 0); }
   .board { justify-self: stretch; max-width: none; }
   .logtable th:nth-child(4), .logtable td:nth-child(4) { display: none; }
+  .logwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .logwrap .logtable { min-width: 32rem; }
+  .map { overflow-x: auto; }
+  .map table { min-width: 34rem; }
 }
 
 /* ---------- reduced motion: the capsule stays home; gates carry their stamps ---------- */
