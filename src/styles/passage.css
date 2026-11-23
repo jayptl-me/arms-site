@@ -44,12 +44,13 @@
   z-index: var(--z-sticky);
   width: min(340px, 82vw);
   transform: translate(-50%, -50%);
+  opacity: 0;
   background: var(--color-paper);
   border: var(--rule-hair) solid var(--color-rule);
   border-radius: var(--radius-card);
   box-shadow: 0 1px 2px oklch(0.2 0.02 140 / 0.08), 0 14px 44px -8px oklch(0.2 0.02 140 / 0.22);
   padding: var(--space-md) var(--space-md) var(--space-sm);
-  transition: opacity var(--dur-short) var(--ease-out);
+  transition: opacity var(--dur-short) var(--ease-out), left var(--dur-long) var(--ease-in-out);
 }
 .capsule[hidden] { display: none; }
 .capsule__row {
