@@ -53,5 +53,20 @@ expect_fail budget bun scripts/budget.ts --dist "$d"
 d=$(copy_dist thirdparty); sed -i 's#</head>#<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">&#' "$d/index.html"
 expect_fail third-party bun scripts/budget.ts --dist "$d"
 
+# a11y: an unindexed page that claims aria-current in the header nav.
+d=$(copy_dist a11y-noindex); sed -i 's#<a \([^>]*href="/privacy[^>]*\)>#<a \1 aria-current="page">#' "$d/parts/index.html"
+grep -q 'aria-current="page"' "$d/parts/index.html" || { echo "NEGATIVE a11y-noindex plant failed"; missed=$((missed + 1)); }
+expect_fail a11y-noindex bun scripts/a11y.ts --dist "$d"
+
+# sd: a planted aggregateRating inside the home ld+json block.
+d=$(copy_dist sd); sed -i 's#"SoftwareApplication"#"SoftwareApplication","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9"}#' "$d/index.html"
+grep -q 'aggregateRating' "$d/index.html" || { echo "NEGATIVE sd plant failed"; missed=$((missed + 1)); }
+expect_fail sd bun scripts/structured-data.ts --dist "$d"
+
+# links: an internal href that points at a page that does not exist.
+d=$(copy_dist links); sed -i 's#href="/privacy"#href="/privacy-missing"#' "$d/index.html"
+grep -q 'privacy-missing' "$d/index.html" || { echo "NEGATIVE links plant failed"; missed=$((missed + 1)); }
+expect_fail links bun scripts/links.ts --dist "$d" --no-external
+
 echo "NEGATIVE missed=$missed"
 [ "$missed" -eq 0 ]

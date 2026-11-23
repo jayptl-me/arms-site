@@ -9,9 +9,11 @@ import Footer from "../components/Footer.astro";
 interface Props {
   title: string;
   description?: string;
+  unindexed?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, unindexed } = Astro.props;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 ---
 
 <!doctype html>
@@ -22,7 +24,12 @@ const { title, description } = Astro.props;
     {description && <meta name="description" content={description} />}
     <meta name="color-scheme" content="light dark" />
     <title>{title}</title>
+    {canonical && <link rel="canonical" href={canonical} />}
+    {unindexed && <meta name="robots" content="noindex, nofollow" />}
+    <slot name="head" />
     <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/rethink-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
       // Before first paint: apply a stored theme choice and mark that script runs.
       (function () {

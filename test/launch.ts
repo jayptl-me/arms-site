@@ -17,7 +17,7 @@ function text(pattern: RegExp, label: string): string {
 const headline = text(/<h1>([^<]+)<\/h1>/, "headline");
 const sentence = text(/<p class="lead">([^<]+)<\/p>/, "sentence");
 const action = text(
-  /<a class="ss-button[^"]*ss-button--primary[^"]*" href="mailto:jayptl0919@gmail.com"[^>]*>\s*<span class="ss-button__label">([^<]*)<\/span>/,
+  /<a class="ss-button[^"]*ss-button--primary[^"]*" href="https:\/\/github\.com\/jayptl-me\/arms-site\/issues"[^>]*>\s*<span class="ss-button__label">([^<]*)<\/span>/,
   "action",
 );
 
@@ -36,7 +36,37 @@ if (!html.includes('href="/privacy"') || !html.includes('href="/terms"')) {
   process.exit(1);
 }
 
+if (!html.includes('rel="canonical" href="https://arms.whyknot.live/"')) {
+  console.error("canonical link missing on home");
+  process.exit(1);
+}
+
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
+const robots = readFileSync(join(dist, "robots.txt"), "utf8");
+if (!robots.includes("User-agent: *") || !robots.includes("Disallow: /look/")) {
+  console.error("robots.txt missing or preview routes crawlable");
+  process.exit(1);
+}
+
+const sitemap = readFileSync(join(dist, "sitemap-0.xml"), "utf8");
+if (!sitemap.includes("<loc>https://arms.whyknot.live/</loc>") || sitemap.includes("/look/") || sitemap.includes("/parts")) {
+  console.error("sitemap missing home or leaks preview routes");
+  process.exit(1);
+}
+
+const securityTxt = readFileSync(join(dist, ".well-known/security.txt"), "utf8");
+if (!securityTxt.includes("Contact:") || !securityTxt.includes("Expires:")) {
+  console.error("security.txt missing or lacks Contact/Expires");
+  process.exit(1);
+}
+
+const homeHtml = readFileSync(join(dist, "index.html"), "utf8");
+const ld = homeHtml.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/);
+if (!ld || !JSON.parse(ld[1]) || JSON.parse(ld[1])["@type"] !== "SoftwareApplication" || "aggregateRating" in JSON.parse(ld[1])) {
+  console.error("home ld+json missing, unparseable, wrong type, or carries a rating");
+  process.exit(1);
+}
+
 for (const [page, heading] of [
   ["privacy", "ARMS Gmail — Privacy Policy"],
   ["terms", "ARMS — Terms of Service"],

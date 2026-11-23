@@ -56,8 +56,25 @@
   --type-body-lg-size: var(--text-lg); --type-body-lg-line: 1.4; --type-body-lg-track: 0;
   --space-1: var(--space-2xs);
   --color-line-strong: var(--color-ink);
-  --color-warning: oklch(0.55 0.12 75);
   --type-caption-size: var(--text-xs); --type-caption-line: 1.3; --type-caption-track: 0;
+  /* UIFoundry sheet aliases — the copied components in src/ui/ read these names. */
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --focus-ring: 0 0 0 2px var(--color-focus);
+  --z-overlay: var(--z-modal);
+  --radius-0: 0; --radius-overlay: var(--radius-card);
+  --shadow-overlay: 0 8px 30px oklch(0.2 0.02 140 / 0.18); --shadow-modal: var(--shadow-overlay);
+  --color-canvas: var(--color-paper); --color-ink-soft: var(--color-muted);
+  --color-overlay: oklch(0.13 0.012 135 / 0.5);
+  --ease-enter: var(--ease-out); --ease-exit: var(--ease-in);
+  --shift-sm: 4px;
+  --duration-fast: var(--dur-micro); --duration-base: var(--dur-short);
+  --space-8: var(--space-xs); --space-12: var(--space-sm); --space-16: var(--space-md); --space-24: var(--space-lg);
+  --measure: 68ch; --card-pad: var(--space-lg); --dialog-max: 42rem;
+  --type-h2-size: var(--text-section); --type-h2-line: 1.15; --type-h2-track: var(--tracking-display);
+  --type-h3-size: var(--text-title); --type-h3-line: 1.25; --type-h3-track: 0;
+  --weight-semibold: 600;
+  --ss-menu-gap: 4px; --ss-menu-enter-x: 0px; --ss-menu-enter-y: -4px;
+  --ss-tooltip-gap: 4px; --ss-tooltip-enter-y: 4px;
 }
 @media (max-width: 60rem) { :root { --gutter: 24px; --section-gap-s: 72px; --section-gap: 96px; --section-gap-l: 120px; } }
 @media (max-width: 40rem) { :root { --gutter: 16px; --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --gap-columns: 16px; } }
