@@ -176,7 +176,7 @@ const jsonld = {
           </tbody>
         </table>
         </div>
-        <p class="muted" style="margin-top: var(--space-md)"><a href="/log">Open the full policy log →</a></p>
+        <p class="muted landing__more"><a href="/log">Open the full policy log →</a></p>
       </div>
     </section>
     </div>
@@ -381,13 +381,5 @@ const jsonld = {
     addEventListener("scroll", onScroll, { passive: true });
     addEventListener("resize", onScroll);
     tick();
-
-    /* Scroll-hash convention for captures: #-s<number> / #-smax. */
-    const s = location.hash.match(/-s(\d+|max)/);
-    if (s) {
-      const go = () => { scrollTo(0, s[1] === "max" ? 999999 : +s[1]); tick(); };
-      go();
-      addEventListener("load", go);
-    }
   </script>
 </Base>
