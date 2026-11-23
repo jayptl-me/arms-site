@@ -281,6 +281,7 @@ const jsonld = {
     let raf = 0;
 
     function setCapsule(g: Element | null, index: number) {
+      if (!cap) return;
       if (g) {
         const d = (g as HTMLElement).dataset;
         if (who) who.textContent = d.who ?? "";

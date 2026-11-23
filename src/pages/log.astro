@@ -98,8 +98,8 @@ const harnesses = [...new Set(rows.map((r) => r.h))];
 
   <script>
     /* Working filters: verdict group x harness, ANDed. */
-    const chips = [...document.querySelectorAll(".fchip")];
-    const rows = [...document.querySelectorAll("#logbody tr")];
+    const chips = [...document.querySelectorAll<HTMLElement>(".fchip")];
+    const rows = [...document.querySelectorAll<HTMLElement>("#logbody tr")];
     const empty = document.getElementById("logempty");
     const state = { v: "all", h: "all" };
     function apply() {
@@ -108,7 +108,7 @@ const harnesses = [...new Set(rows.map((r) => r.h))];
         const ok =
           (state.v === "all" || r.dataset.g === state.v) &&
           (state.h === "all" || r.dataset.h === state.h);
-        (r as HTMLElement).style.display = ok ? "" : "none";
+        r.style.display = ok ? "" : "none";
         if (ok) shown++;
       });
       if (empty) empty.hidden = shown !== 0;
