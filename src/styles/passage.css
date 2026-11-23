@@ -335,15 +335,15 @@
 @media (max-width: 55rem) {
   .rail { left: 22px; margin-left: 0; }
   .gate__inner { grid-template-columns: 44px minmax(0, 1fr); min-height: 82vh; align-items: start; padding-top: 14vh; }
-  .gate__card, .gate:nth-of-type(odd) .gate__card { grid-column: 2; justify-self: stretch; max-width: none; margin-bottom: 30vh; }
+  /* .gate .gate__card must out-specify the odd/even desktop rules above,
+     else even gates stay in the 44px gutter column and overflow off-screen. */
+  .gate .gate__card { grid-column: 2; justify-self: stretch; max-width: none; margin-bottom: 30vh; }
   .station { left: 23px; top: 26vh; transform: translateX(-50%); }
   .capsule { top: auto; bottom: var(--space-md); transform: translate(-50%, 0); }
   .board { justify-self: stretch; max-width: none; }
   .logtable th:nth-child(4), .logtable td:nth-child(4) { display: none; }
   .logwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .logwrap .logtable { min-width: 32rem; }
-  .map { overflow-x: auto; }
-  .map table { min-width: 34rem; }
 }
 
 /* ---------- reduced motion: the capsule stays home; gates carry their stamps ---------- */
