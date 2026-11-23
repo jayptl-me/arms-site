@@ -7,7 +7,7 @@ import { Button } from "../src/ui/button/button.tsx";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const shipped = readFileSync(join(root, "dist/index.html"), "utf8");
-const action = /<a class="ss-button[^"]*ss-button--primary[^"]*" href="(mailto:[^"]+)"[^>]*>\s*<span class="ss-button__label">([^<]*)<\/span>/.exec(shipped);
+const action = /<a class="ss-button[^"]*ss-button--primary[^"]*" href="(https:\/\/github\.com\/jayptl-me\/arms-site\/issues[^"]*)"[^>]*>\s*<span class="ss-button__label">([^<]*)<\/span>/.exec(shipped);
 if (!action) {
   console.error("shipped page has no UIFoundry action");
   process.exit(1);

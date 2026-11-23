@@ -7,8 +7,8 @@ import "../ui/separator/separator.css";
 import "../styles/home.css";
 import { claims } from "../claims.ts";
 
-/* Real request-log entries shaped like the live audit: harness -> connector.tool,
-   the policy verdict, and the call time. Names and verdicts are the product's own. */
+/* Sample entries shaped like the live audit: harness -> connector.tool, the policy
+   verdict, and the call time. Names and verdicts are the product's own words. */
 const trace = [
   { harness: "claude-code", call: "gmail.list_threads", verdict: "ALLOWED", ms: "84" },
   { harness: "cursor", call: "github.create_pull_request", verdict: "DENIED_TOOL", ms: "—" },
@@ -59,8 +59,8 @@ const jsonld = {
           ))}
         </div>
       </div>
-      <figure class="trace" id="trace" aria-label="A policy request log from the gateway">
-        <figcaption>Policy log</figcaption>
+      <figure class="trace" id="trace" tabindex="0" aria-label="A sample policy request log from the gateway">
+        <figcaption>Policy log · sample</figcaption>
         <ul>
           {trace.map((t) => (
             <li>
@@ -73,16 +73,16 @@ const jsonld = {
         </ul>
       </figure>
     </section>
-    <figure class="map" id="map" tabindex="0" aria-label="Which harness may reach which connector">
-      <figcaption>Connection map</figcaption>
+    <figure class="map" id="map" tabindex="0" aria-label="Sample of which harness may reach which connector">
+      <figcaption>Connection map · sample</figcaption>
       <table>
         <thead>
-          <tr><th></th>{mapCols.map((c) => <th>{c}</th>)}</tr>
+          <tr><td></td>{mapCols.map((c) => <th scope="col">{c}</th>)}</tr>
         </thead>
         <tbody>
           {mapRows.map((r) => (
             <tr>
-              <th>{r.name}</th>
+              <th scope="row">{r.name}</th>
               {r.cells.map((c) => (
                 <td><span class={c ? "cell on" : "cell off"}>{c ? "allow" : "off"}</span></td>
               ))}
