@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /look/
 Disallow: /parts
+
+Sitemap: https://arms.whyknot.live/sitemap-index.xml

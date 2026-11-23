@@ -9,7 +9,7 @@ export const claims = {
   does: [
     {
       title: "One router.",
-      body: "Plane, GitHub, GitLab, Slack, Postgres, Gmail, S3, Docker, and community tool servers share this gateway.",
+      body: "Plane, GitHub, GitLab, Jira, Linear, Notion, Slack, Postgres, Redis, Gmail, S3, Docker, and community tool servers share this gateway.",
     },
     {
       title: "Policy per agent.",
@@ -77,6 +77,10 @@ export const claims = {
     },
   ],
   action: {
+    label: "Get ARMS on GitHub",
+    href: "https://github.com/Whyknot-live/ARMS",
+  },
+  issue: {
     label: "Open an issue",
     href: "https://github.com/jayptl-me/arms-site/issues",
   },

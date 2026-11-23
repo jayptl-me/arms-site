@@ -17,9 +17,13 @@ function text(pattern: RegExp, label: string): string {
 const headline = text(/<h1>([^<]+)<\/h1>/, "headline");
 const sentence = text(/<p class="lead">([^<]+)<\/p>/, "sentence");
 const action = text(
-  /<a class="ss-button[^"]*ss-button--primary[^"]*" href="https:\/\/github\.com\/jayptl-me\/arms-site\/issues"[^>]*>\s*<span class="ss-button__label">([^<]*)<\/span>/,
+  /<a class="ss-button[^"]*ss-button--primary[^"]*" href="https:\/\/github\.com\/Whyknot-live\/ARMS"[^>]*>\s*<span class="ss-button__label">([^<]*)<\/span>/,
   "action",
 );
+if (!html.includes("https://github.com/jayptl-me/arms-site/issues")) {
+  console.error("site issue link missing");
+  process.exit(1);
+}
 
 if (!html.includes("ss-button--primary")) {
   console.error("primary control is not the UIFoundry button");
@@ -68,7 +72,7 @@ if (!ld || !JSON.parse(ld[1]) || JSON.parse(ld[1])["@type"] !== "SoftwareApplica
 }
 
 for (const [page, heading] of [
-  ["privacy", "ARMS Gmail — Privacy Policy"],
+  ["privacy", "ARMS — Privacy Policy"],
   ["terms", "ARMS — Terms of Service"],
 ] as const) {
   const legal = readFileSync(join(dist, page, "index.html"), "utf8");
