@@ -68,6 +68,7 @@ const harnesses = [...new Set(rows.map((r) => r.h))];
         </div>
       </div>
 
+      <div class="logwrap">
       <table class="logtable logtable--full">
         <thead>
           <tr><th scope="col">Harness</th><th scope="col">Call</th><th scope="col">Verdict</th><th scope="col">ms</th></tr>
@@ -83,6 +84,7 @@ const harnesses = [...new Set(rows.map((r) => r.h))];
           ))}
         </tbody>
       </table>
+      </div>
       <p class="logempty" id="logempty" hidden>No calls match both filters.</p>
 
       <p class="legend muted">

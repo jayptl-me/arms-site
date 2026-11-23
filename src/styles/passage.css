@@ -335,15 +335,22 @@
 @media (max-width: 55rem) {
   .rail { left: 22px; margin-left: 0; }
   .gate__inner { grid-template-columns: 44px minmax(0, 1fr); min-height: 82vh; align-items: start; padding-top: 14vh; }
-  /* .gate .gate__card must out-specify the odd/even desktop rules above,
+  /* The odd/even desktop rules above are (0,3,0) — match them exactly,
      else even gates stay in the 44px gutter column and overflow off-screen. */
-  .gate .gate__card { grid-column: 2; justify-self: stretch; max-width: none; margin-bottom: 30vh; }
+  .gate__card,
+  .gate:nth-of-type(odd) .gate__card,
+  .gate:nth-of-type(even) .gate__card { grid-column: 2; justify-self: stretch; max-width: none; margin-bottom: 30vh; }
   .station { left: 23px; top: 26vh; transform: translateX(-50%); }
   .capsule { top: auto; bottom: var(--space-md); transform: translate(-50%, 0); }
   .board { justify-self: stretch; max-width: none; }
   .logtable th:nth-child(4), .logtable td:nth-child(4) { display: none; }
   .logwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .logwrap .logtable { min-width: 32rem; }
+  /* Fit the log inside the viewport rather than clipping verdict names:
+     wrap long mono values and shrink the verdict chip. */
+  .logwrap .logtable { min-width: 0; }
+  .logtable .t-harness, .logtable .t-call { overflow-wrap: anywhere; }
+  .logtable th, .logtable td { padding: var(--space-2xs) var(--space-xs); }
+  .logtable .v { font-size: 10px; letter-spacing: 0.03em; padding: 2px 5px; }
 }
 
 /* ---------- reduced motion: the capsule stays home; gates carry their stamps ---------- */
