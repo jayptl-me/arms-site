@@ -32,9 +32,10 @@
   max-width: 8ch;
   margin: 0;
   font-family: var(--font-outlier);
-  font-size: clamp(4rem, 10vw, 8.75rem);
+  font-size: clamp(4rem, 8vw, 7rem);
   line-height: 0.82;
   letter-spacing: -0.07em;
+  overflow-wrap: normal;
 }
 .signal-lead {
   max-width: 430px;
@@ -278,5 +279,16 @@
   .proof-bar span:last-child { display: none; }
   .signal-metrics { grid-template-columns: 1fr; }
   .signal-metrics article + article { border-top: 2px solid var(--signal-line); border-left: 0; }
+  .signal-table { overflow-x: visible; }
+  .table-head { display: none; }
+  .table-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 7px 12px;
+    min-width: 0;
+  }
+  .table-row > span:first-child { color: var(--color-muted); font-size: 0.72rem; }
+  .table-row > strong { grid-column: 1 / -1; overflow-wrap: anywhere; }
+  .table-row .verdict { grid-column: 1; }
+  .table-row .ms { grid-column: 2; grid-row: 1; }
   .connector-grid { grid-template-columns: 1fr; }
 }

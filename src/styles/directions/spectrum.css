@@ -29,7 +29,7 @@
 }
 .spectrum-hero {
   display: grid;
-  grid-template-columns: minmax(260px, 0.68fr) minmax(0, 1.32fr);
+  grid-template-columns: minmax(320px, 0.86fr) minmax(0, 1.14fr);
   gap: clamp(20px, 4vw, 48px);
   align-items: center;
   min-height: 76vh;
@@ -44,9 +44,10 @@
   max-width: 9ch;
   margin: 0;
   font-family: var(--font-outlier);
-  font-size: clamp(3.4rem, 7.6vw, 6.9rem);
+  font-size: clamp(3.4rem, 6vw, 5.6rem);
   line-height: 0.88;
   letter-spacing: -0.06em;
+  overflow-wrap: normal;
 }
 .spectrum-lead {
   margin: 22px 0 0;
