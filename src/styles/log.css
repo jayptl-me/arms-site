@@ -85,3 +85,43 @@
 @media (max-width: 40rem) {
   .latest__call { font-size: var(--text-md); }
 }
+
+.logpage h1 {
+  font-size: clamp(3.2rem, 8vw, 6rem);
+  line-height: 0.86;
+  letter-spacing: -0.065em;
+}
+.latest {
+  border: 2px solid var(--color-ink);
+  border-radius: 0;
+  background: var(--color-paper-2);
+  box-shadow: 8px 8px 0 var(--color-ink);
+}
+.fchip {
+  min-height: 36px;
+  border: 2px solid var(--color-rule);
+  border-radius: 0;
+  padding: 0 var(--space-sm);
+}
+.fchip.on {
+  border-color: var(--color-ink);
+  color: var(--color-accent-ink);
+  background: var(--color-accent);
+}
+.logtable--full {
+  border: 2px solid var(--color-ink);
+  border-radius: 0;
+  font-family: var(--font-mono);
+}
+.logtable--full th {
+  border-bottom: 2px solid var(--color-ink);
+  font-family: var(--font-mono);
+}
+.logtable--full td {
+  border-bottom-color: color-mix(in oklch, var(--color-ink) 28%, transparent);
+}
+.logtable--full .v {
+  border: 1px solid currentColor;
+  border-radius: 0;
+  background: transparent;
+}

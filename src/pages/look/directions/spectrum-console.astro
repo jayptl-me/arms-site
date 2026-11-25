@@ -1,0 +1,133 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { claims } from "../../../claims.ts";
+import { connectors, formatMs, metrics, trace, verdictClass } from "../../../lib/directions.ts";
+import "../../../styles/directions/spectrum.css";
+
+const verdictCounts = [
+  { label: "allowed", className: "allowed", count: trace.filter((row) => verdictClass(row.verdict) === "ok").length },
+  { label: "denied", className: "denied", count: trace.filter((row) => verdictClass(row.verdict) === "no").length },
+  { label: "rate limited", className: "limited", count: trace.filter((row) => verdictClass(row.verdict) === "warn").length },
+];
+const maxCount = Math.max(...verdictCounts.map((item) => item.count));
+---
+
+<Base title="ARMS direction C — Spectrum console" description="A dense product-first coded direction for the ARMS site." unindexed>
+  <style is:inline>
+    @media (prefers-reduced-motion: reduce) {
+      .spectrum-page *, .spectrum-page *::before, .spectrum-page *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+  <div class="spectrum-page" data-direction="spectrum-console">
+    <section class="spectrum-hero">
+      <div class="spectrum-copy">
+        <p class="spectrum-kicker">Direction C · product as the page / spectrum, no glow</p>
+        <h1>{claims.headline}</h1>
+        <p class="spectrum-lead">The console is the face: dense real rows, semantic colour, quiet chrome, state-driven motion.</p>
+        <div class="spectrum-actions">
+          <a class="spectrum-primary" href={claims.action.href}>Get ARMS on GitHub</a>
+          <a class="spectrum-secondary" href="/look/directions/clay-observatory/">Compare with B</a>
+        </div>
+      </div>
+      <div class="spectrum-proof" aria-label="Real ARMS console preview">
+        <div class="spectrum-proof-top">
+          <span class="dot ok"></span>
+          <span>real console proof</span>
+          <span>synthetic traffic</span>
+        </div>
+        <img class="spectrum-shot spectrum-shot-dark" src="/console-proof/dark-overview-tabs.webp" alt="Real ARMS console preview in dark mode" width="1600" height="1000" loading="eager" />
+        <img class="spectrum-shot spectrum-shot-light" src="/console-proof/light-overview-tabs.webp" alt="Real ARMS console preview in light mode" width="1600" height="1000" loading="eager" />
+      </div>
+    </section>
+
+    <section class="spectrum-console-lab">
+      <div class="spectrum-tabs" role="group" aria-label="console tabs">
+        <button type="button" aria-pressed="true" data-panel="overview">Overview</button>
+        <button type="button" aria-pressed="false" data-panel="policy">Policy</button>
+        <button type="button" aria-pressed="false" data-panel="connectors">Connectors</button>
+      </div>
+
+      <div class="spectrum-panel" data-panel-id="overview">
+        <div class="metric-strip">
+          {metrics.map((metric, index) => (
+            <article class={`spectrum-metric hue-${index + 1}`}>
+              <span>{metric.label}</span>
+              <strong>{metric.value}</strong>
+              <small>{metric.note}</small>
+            </article>
+          ))}
+        </div>
+        <div class="throughput-card">
+          <div class="chart-head">
+            <div>
+              <p>request mix</p>
+              <h2>Truthful states, not decoration.</h2>
+            </div>
+            <span>sample rows</span>
+          </div>
+          <div class="verdict-chart" role="img" aria-label="Counts from the sample rows on this page: 4 allowed, 1 denied, 1 rate limited">
+            {verdictCounts.map((item) => (
+              <div class={`verdict-bar ${item.className}`}>
+                <span class="bar-label">{item.label}</span>
+                <span class="bar-track"><span class="bar-fill" style={`--bar-size:${(item.count / maxCount) * 100}%`}></span></span>
+                <strong>{item.count}</strong>
+              </div>
+            ))}
+          </div>
+          <div class="legend"><span class="ok">allowed</span><span class="no">denied</span><span class="warn">rate limited</span><span>counts from the rows below</span></div>
+        </div>
+      </div>
+
+      <div class="spectrum-panel" data-panel-id="policy" hidden>
+        <div class="policy-list" aria-label="Sample policy audit rows">
+          {trace.map((row) => (
+            <article class={`spectrum-row ${verdictClass(row.verdict)}`}>
+              <span class="row-state"></span>
+              <div>
+                <strong>{row.call}</strong>
+                <span>{row.harness}</span>
+              </div>
+              <code>{row.verdict}</code>
+              <span class="row-ms">{formatMs(row.ms)}</span>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div class="spectrum-panel" data-panel-id="connectors" hidden>
+        <div class="connector-matrix">
+          {connectors.map((connector, index) => (
+            <article class={`matrix-cell hue-${(index % 4) + 1}`}>
+              <span>{connector.scope}</span>
+              <h3>{connector.name}</h3>
+              <p>{connector.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="spectrum-close">
+      <h2>Why this direction exists</h2>
+      <p>
+        This is the console-ruler direction: modern, dense, proportional and product-led. It leans toward the
+        Infisical/PostHog side while keeping ARMS own: no orange, no glow, no spreadsheet skin, and colour only
+        where state or series need it. Light and dark are the same language with two value sets.
+      </p>
+      <a href="/look/directions/">Back to the round</a>
+    </section>
+  </div>
+  <script is:inline>
+    const tabButtons = document.querySelectorAll("[data-panel]");
+    const panels = document.querySelectorAll("[data-panel-id]");
+    tabButtons.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const wanted = tab.getAttribute("data-panel");
+        tabButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === tab)));
+        panels.forEach((panel) => {
+          panel.hidden = panel.getAttribute("data-panel-id") !== wanted;
+        });
+      });
+    });
+  </script>
+</Base>

@@ -1,0 +1,122 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { claims } from "../../../claims.ts";
+import { connectors, formatMs, metrics, trace, verdictClass } from "../../../lib/directions.ts";
+import "../../../styles/directions/clay.css";
+---
+
+<Base title="ARMS direction B — Clay observatory" description="A warm, calm coded direction for the ARMS site." unindexed>
+  <style is:inline>
+    @media (prefers-reduced-motion: reduce) {
+      .clay-page *, .clay-page *::before, .clay-page *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+  <div class="clay-page" data-direction="clay-observatory">
+    <section class="clay-hero">
+      <div class="clay-copy">
+        <p class="clay-kicker">Direction B · cozy calm / clean premium</p>
+        <h1>{claims.headline}</h1>
+        <p class="clay-lead">A quieter product surface: warm clay, generous air, soft colour and the real console held like evidence.</p>
+        <div class="clay-actions">
+          <a class="clay-primary" href={claims.action.href}>Get ARMS on GitHub</a>
+          <a class="clay-secondary" href="/look/directions/spectrum-console/">Compare with C</a>
+        </div>
+      </div>
+      <div class="clay-proof" aria-label="Real ARMS console preview">
+        <div class="clay-proof-top">
+          <span>console proof</span>
+          <span>real capture</span>
+        </div>
+        <img class="clay-shot clay-shot-dark" src="/console-proof/dark-overview-tabs.webp" alt="Real ARMS console preview in dark mode" width="1600" height="1000" loading="eager" />
+        <img class="clay-shot clay-shot-light" src="/console-proof/light-overview-tabs.webp" alt="Real ARMS console preview in light mode" width="1600" height="1000" loading="eager" />
+      </div>
+    </section>
+
+    <section class="clay-metrics" aria-label="Product facts">
+      {metrics.map((metric) => (
+        <article class="metric-card">
+          <span class="metric-value">{metric.value}</span>
+          <span class="metric-label">{metric.label}</span>
+          <span class="metric-note">{metric.note}</span>
+        </article>
+      ))}
+    </section>
+
+    <section class="clay-connector-lab">
+      <div class="clay-section-copy">
+        <p class="clay-kicker">Connector picker</p>
+        <h2>Choose a tool; the page answers with its real scope.</h2>
+        <p>Small interactions carry the personality here. No generic icon grid, no fake logo wall, no card inside a card.</p>
+      </div>
+      <div class="connector-lab">
+        <div class="connector-buttons" role="group" aria-label="connector picker">
+          {connectors.map((connector, index) => (
+            <button type="button" aria-pressed={index === 0 ? "true" : "false"} data-connector={connector.name}>
+              <span>{connector.name}</span>
+              <small>{connector.scope}</small>
+            </button>
+          ))}
+        </div>
+        <article class="connector-detail" aria-live="polite">
+          <p class="detail-kicker">selected connector</p>
+          <h3 id="connector-name">{connectors[0].name}</h3>
+          <p id="connector-body">{connectors[0].body}</p>
+          <div class="connector-empty">
+            <span class="empty-mark" aria-hidden="true"></span>
+            <div>
+              <strong>No keys shown.</strong>
+              <p>Credentials stay in the vault; this public page only explains what the connector can do.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="clay-log">
+      <div class="clay-section-copy narrow">
+        <p class="clay-kicker">Policy log</p>
+        <h2>Rows that breathe.</h2>
+      </div>
+      <div class="clay-log-list" aria-label="Sample policy audit rows">
+        {trace.map((row) => (
+          <article class={`log-row ${verdictClass(row.verdict)}`}>
+            <div>
+              <strong>{row.call}</strong>
+              <span>{row.harness}</span>
+            </div>
+            <span class="clay-verdict">{row.verdict}</span>
+            <span class="clay-ms">{formatMs(row.ms)}</span>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="clay-close">
+      <h2>Why this direction exists</h2>
+      <p>
+        This is the cozy-and-calm register translated into a product surface: warm but not cold grey,
+        soft clay without glass, crafted empty-state detail, generous space and premium restraint. It keeps the
+        product evidence central and uses the broader pastel range only where it helps.
+      </p>
+      <a href="/look/directions/">Back to the round</a>
+    </section>
+  </div>
+  <script type="application/json" id="connector-data" set:html={JSON.stringify(connectors)}></script>
+  <script is:inline>
+    const dataNode = document.getElementById("connector-data");
+    const connectorData = dataNode ? JSON.parse(dataNode.textContent || "[]") : [];
+    const tabs = document.querySelectorAll("[data-connector]");
+    const name = document.getElementById("connector-name");
+    const body = document.getElementById("connector-body");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const picked = connectorData.find((item) => item.name === tab.getAttribute("data-connector"));
+        tabs.forEach((item) => item.setAttribute("aria-pressed", String(item === tab)));
+        if (picked && name && body) {
+          name.textContent = picked.name;
+          body.textContent = picked.body;
+        }
+      });
+    });
+  </script>
+</Base>

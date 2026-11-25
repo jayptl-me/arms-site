@@ -1,12 +1,11 @@
 ---
 import Base from "../layouts/Base.astro";
 import { Button } from "../ui/button/button.tsx";
-import { Separator } from "../ui/separator/separator.tsx";
 import "../ui/button/button.css";
-import "../ui/separator/separator.css";
-import "../styles/home.css";
-import "../styles/passage.css";
+import "../styles/directions/signal.css";
+import "../styles/signal-site.css";
 import { claims } from "../claims.ts";
+import { metrics, verdictClass } from "../lib/directions.ts";
 
 /* Sample entries shaped like the live audit: harness -> connector.tool, the policy
    verdict, and the call time. Names and verdicts are the product's own words. */
@@ -28,56 +27,27 @@ const mapRows = [
 ];
 const mapCols = ["Gmail", "GitHub", "Slack", "Plane", "Postgres"];
 
-/* The journey's stations: one call, four gates, one log. Verdict words are the
-   product's own; the capsule's stamp inherits each gate's. */
-const gates = [
-  {
-    stage: "Intake",
-    who: "claude-code",
-    call: "gmail.list_threads",
-    stamp: "RECEIVED",
-    v: "",
-    num: "01",
-    title: "The call arrives",
-    body: "claude-code asks for gmail.list_threads. Every call from every harness enters here — one door, one shape.",
-    side: "claude-code · cursor · windsurf · opencode · claude-desktop",
-  },
-  {
-    stage: "Trust check",
-    who: "claude-code",
-    call: "gmail.list_threads",
-    stamp: "KEYED + READ-ONLY",
-    v: "warn",
-    num: "02",
-    title: "Who is asking",
-    body: "The key is verified and its scope read before anything else. A read-only key can never write, whatever the agent asks for.",
-    side: "per-agent keys · least scope",
-  },
-  {
-    stage: "Policy",
-    who: "cursor",
-    call: "github.create_pull_request",
-    stamp: "DENIED_HARNESS_TOOL",
-    v: "no",
-    num: "03",
-    title: "The verdict",
-    body: "Policy decides, per harness and per tool. Here cursor may not call github.create_pull_request — the call is refused before it leaves.",
-    side: "allow · deny · rate-limit, per agent per tool",
-  },
-  {
-    stage: "Routing",
-    who: "windsurf",
-    call: "plane.create_work_item",
-    stamp: "ALLOWED",
-    v: "ok",
-    num: "04",
-    title: "Onward, allowed",
-    body: "An allowed call rides to its connector — here windsurf reaches Plane. The map below shows which harness may reach which service.",
-    side: "12 native connectors + community servers",
-  },
-];
+const connectorScopes: Record<string, string> = {
+  Gmail: "mail",
+  GitHub: "code",
+  GitLab: "code",
+  Plane: "work",
+  Jira: "work",
+  Linear: "work",
+  Notion: "docs",
+  Slack: "chat",
+  Postgres: "data",
+  Redis: "data",
+  S3: "objects",
+  Docker: "runtime",
+};
 
-const stops = ["Intake", "Trust check", "Policy", "Routing", "Policy log"];
+const claimGroups = [
+  ["What it does", claims.does],
+  ["Control plane", claims.plane],
+  ["Before a call goes out", claims.decisions],
+  ["Still on your machine", claims.local],
+] as const;
 
 const jsonld = {
   "@context": "https://schema.org",
@@ -94,292 +64,156 @@ const jsonld = {
 
 <Base title="ARMS, a local-first AI agent gateway" description="Open-source tools for agents, on your machine.">
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonld)} />
-  <div class="journey" id="journey">
-    <div class="capsule" id="capsule" aria-hidden="true">
-      <div class="capsule__row">
-        <span class="capsule__who" id="cap-who">claude-code</span>
-        <span class="capsule__stage" id="cap-stage">en route</span>
+  <div class="signal-page" data-direction="signal-objects">
+    <section class="signal-hero">
+      <div class="signal-copy">
+        <p class="signal-kicker">Local-first agent gateway</p>
+        <h1>{claims.headline}</h1>
+        <p class="lead">{claims.lead}</p>
+        <p class="signal-opening">{claims.opening}</p>
+        <div class="signal-actions">
+          <Button as="a" href={claims.action.href} variant="primary" size="large">{claims.action.label}</Button>
+          <a class="signal-button secondary" href="#policy-proof">See policy proof</a>
+        </div>
+        <p class="harnesslead">{claims.harnessLead}</p>
+        <div class="signal-harnesses" aria-label="Supported harnesses">
+          {claims.harnesses.map((harness) => (
+            <span>{harness}</span>
+          ))}
+        </div>
       </div>
-      <div class="capsule__call" id="cap-call">gmail.list_threads</div>
-      <div class="capsule__track"><span class="capsule__meter" id="cap-meter"></span></div>
-      <span class="capsule__stamp" id="cap-stamp">RECEIVED</span>
-    </div>
+      <div class="signal-proof" aria-label="Real ARMS console preview">
+        <div class="proof-bar"><span>ARMS console</span><span>deployed build proof</span></div>
+        <img class="shot shot-dark" src="/console-proof/dark-overview-tabs.webp" alt="Real ARMS console preview in dark mode" width="1600" height="1000" loading="eager" />
+        <img class="shot shot-light" src="/console-proof/light-overview-tabs.webp" alt="Real ARMS console preview in light mode" width="1600" height="1000" loading="eager" />
+      </div>
+    </section>
 
-    <div class="container">
-      <section class="hero">
-        <div class="hero__intro">
-          <h1>{claims.headline}</h1>
-          <p class="lead">{claims.lead}</p>
-          <p class="sub">{claims.opening}</p>
-          <div class="btn-row">
-            <Button as="a" href={claims.action.href} variant="primary" size="large">{claims.action.label}</Button>
-            <a class="btn ghost" href="#map">See the map</a>
-          </div>
-          <p class="harnesslead">{claims.harnessLead}</p>
-          <div class="chips">
-            {claims.harnesses.map((harness) => (
-              <span class="chip">{harness}</span>
-            ))}
-          </div>
+    <section class="signal-metrics" aria-label="Product facts">
+      {metrics.map((m, index) => (
+        <article>
+          <span class="metric-num">{m.value}</span>
+          <span class="metric-label">{m.label}</span>
+          <span class="metric-note">0{index + 1} · {m.note}</span>
+        </article>
+      ))}
+    </section>
+
+    <section class="signal-board" id="policy-proof">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Policy filter</p>
+          <h2>Every call keeps its verdict.</h2>
         </div>
-        <aside class="board" aria-label="One call's route through the gateway">
-          <div class="board__title">One call's route</div>
-          <ol>
-            {stops.map((s, i) => (
-              <li class={i === 0 ? "lit" : ""} data-stop={i}>
-                <span>{s}</span>
-                <span class="stop">{i < 4 ? `gate 0${i + 1}` : "arrived"}</span>
-              </li>
-            ))}
-          </ol>
-          <div class="live">now riding: <b id="board-call">gmail.list_threads</b></div>
-        </aside>
-      </section>
-    </div>
-
-    <div class="journey-run">
-      <div class="rail" aria-hidden="true"><span class="rail__fill"></span><span class="rail__glow"></span></div>
-
-    {gates.map((g) => (
-      <section class="gate" data-stage={g.stage} data-who={g.who} data-call={g.call} data-stamp={g.stamp} data-v={g.v} id={g.stage === "Routing" ? "map" : undefined}>
-        <span class="station" aria-hidden="true"></span>
-        <div class="container gate__inner">
-          <article class="gate__card">
-            <span class="gate__num">GATE {g.num} · {g.stage.toUpperCase()}</span>
-            <h2>{g.title}</h2>
-            <p>{g.body}</p>
-            <div class="gate__side">{g.side}</div>
-            <span class="gate__stamp" data-v={g.v || undefined}>{g.stamp}</span>
-          </article>
+        <div class="filter-controls" role="group" aria-label="policy filter">
+          <button type="button" aria-pressed="true" data-filter="all">All</button>
+          <button type="button" aria-pressed="false" data-filter="ALLOWED">Allowed</button>
+          <button type="button" aria-pressed="false" data-filter="DENIED_HARNESS_TOOL">Denied</button>
+          <button type="button" aria-pressed="false" data-filter="RATE_LIMITED_RPS">Limited</button>
         </div>
-      </section>
-    ))}
+      </div>
+      <div class="signal-table" tabindex="0" aria-label="Sample policy audit rows">
+        <div class="table-head"><span>Harness</span><span>Call</span><span>Verdict</span><span>ms</span></div>
+        {trace.map((row) => (
+          <div class="table-row" data-verdict={row.verdict}>
+            <span>{row.harness}</span>
+            <strong>{row.call}</strong>
+            <span class={`verdict ${verdictClass(row.verdict)}`}>{row.verdict}</span>
+            <span class="ms">{row.ms}</span>
+          </div>
+        ))}
+      </div>
+      <p class="signal-more"><a href="/log">Open the full policy log</a></p>
+    </section>
 
-    <section class="landing" id="log">
-      <div class="container">
-        <h2>Every call lands in the log</h2>
-        <p class="landing__lead">The call you followed is the newest row. Each entry keeps the harness, the tool, the verdict and the time it took.</p>
-        <div class="logwrap" tabindex="0">
-        <table class="logtable">
+    <section class="signal-map-section" aria-labelledby="connection-map-title">
+      <div class="section-head compact">
+        <div>
+          <p class="eyebrow">Connection map.</p>
+          <h2 id="connection-map-title">Which harness may reach which tool.</h2>
+        </div>
+      </div>
+      <figure class="signal-map" tabindex="0" aria-label="Sample of which harness may reach which connector">
+        <figcaption>Connection map · sample</figcaption>
+        <table>
           <thead>
-            <tr><th scope="col">Harness</th><th scope="col">Call</th><th scope="col">Verdict</th><th scope="col">ms</th></tr>
+            <tr><td></td>{mapCols.map((c) => <th scope="col">{c}</th>)}</tr>
           </thead>
           <tbody>
-            {trace.map((t, i) => (
-              <tr class={i === 0 ? "landing-target" : ""}>
-                <td class="t-harness">{t.harness}</td>
-                <td class="t-call">{t.call}</td>
-                <td><span class={`v ${t.verdict === "ALLOWED" ? "ok" : t.verdict === "RATE_LIMITED_RPS" ? "warn" : "no"}`}>{t.verdict}</span></td>
-                <td class="t-ms">{t.ms}</td>
+            {mapRows.map((r) => (
+              <tr>
+                <th scope="row">{r.name}</th>
+                {r.cells.map((c) => (
+                  <td><span class={c ? "cell on" : "cell off"}>{c ? "allow" : "off"}</span></td>
+                ))}
               </tr>
             ))}
           </tbody>
         </table>
+      </figure>
+    </section>
+
+    <section class="signal-connectors">
+      <div class="section-head compact">
+        <div>
+          <p class="eyebrow">Connector inventory</p>
+          <h2>Named tools, no decoration.</h2>
         </div>
-        <p class="muted landing__more"><a href="/log">Open the full policy log →</a></p>
+      </div>
+      <div class="connector-grid">
+        {claims.connectors.map((connector, index) => (
+          <details class="signal-connector-card" open={index === 0}>
+            <summary><span>{connector.name}</span><span>{connectorScopes[connector.name] ?? "tool"}</span></summary>
+            <p>{connector.body}</p>
+          </details>
+        ))}
       </div>
     </section>
-    </div>
-  </div>
 
-  <div class="container">
-    <figure class="map" tabindex="0" aria-label="Sample of which harness may reach which connector">
-      <figcaption>Connection map · sample</figcaption>
-      <table>
-        <thead>
-          <tr><td></td>{mapCols.map((c) => <th scope="col">{c}</th>)}</tr>
-        </thead>
-        <tbody>
-          {mapRows.map((r) => (
-            <tr>
-              <th scope="row">{r.name}</th>
-              {r.cells.map((c) => (
-                <td><span class={c ? "cell on" : "cell off"}>{c ? "allow" : "off"}</span></td>
-              ))}
-            </tr>
+    {claimGroups.map(([title, items]) => (
+      <section class="signal-claims" aria-labelledby={`claims-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
+        <div class="section-head compact">
+          <div>
+            <p class="eyebrow">Product object</p>
+            <h2 id={`claims-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>{title}</h2>
+          </div>
+        </div>
+        <div class="claim-grid">
+          {items.map((point, index) => (
+            <article>
+              <span class="claim-index">{String(index + 1).padStart(2, "0")}</span>
+              <h3>{point.title}</h3>
+              <p>{point.body}</p>
+            </article>
           ))}
-        </tbody>
-      </table>
-    </figure>
-    <section class="points">
-      <h2>What it does</h2>
-      <div class="row">
-        {claims.does.map((point) => (
-          <div class="point">
-            <h3>{point.title}</h3>
-            <p>{point.body}</p>
-          </div>
-        ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="signal-close">
+      <p class="eyebrow">Open tools, local first</p>
+      <h2>The gateway stays inspectable.</h2>
+      <p>
+        ARMS is open source, runs on your machine, keeps its policy decisions visible, and stores credentials in an encrypted vault whose key stays with you.
+      </p>
+      <div class="signal-actions">
+        <a class="signal-button" href={claims.action.href}>Get ARMS on GitHub</a>
+        <a class="signal-button secondary" href={claims.issue.href}>{claims.issue.label}</a>
       </div>
     </section>
-    <section class="points">
-      <h2>Control plane</h2>
-      <div class="row">
-        {claims.plane.map((point) => (
-          <div class="point">
-            <h3>{point.title}</h3>
-            <p>{point.body}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-    <section class="points">
-      <h2>Before a call goes out</h2>
-      <div class="row">
-        {claims.decisions.map((point) => (
-          <div class="point">
-            <h3>{point.title}</h3>
-            <p>{point.body}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-    <section class="points">
-      <h2>Native connectors</h2>
-      <div class="row">
-        {claims.connectors.map((item) => (
-          <div class="point">
-            <h3>{item.name}</h3>
-            <p>{item.body}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-    <section class="points">
-      <h2>Still on your machine</h2>
-      <div class="row">
-        {claims.local.map((point) => (
-          <div class="point">
-            <h3>{point.title}</h3>
-            <p>{point.body}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-    <Separator ornamental={false} />
   </div>
 
-  <script>
-    /* The Passage: the capsule rides scroll progress through the journey,
-       stamped at each gate, and docks into the policy log's first row. */
-    const run = document.querySelector(".journey-run");
-    const cap = document.getElementById("capsule");
-    const railFill = document.querySelector(".rail__fill") as HTMLElement | null;
-    const railGlow = document.querySelector(".rail__glow") as HTMLElement | null;
-    const meter = document.getElementById("cap-meter");
-    const who = document.getElementById("cap-who");
-    const call = document.getElementById("cap-call");
-    const stage = document.getElementById("cap-stage");
-    const stamp = document.getElementById("cap-stamp");
-    const boardCall = document.getElementById("board-call");
-    const stops = [...document.querySelectorAll(".board li")];
-    const gates = [...document.querySelectorAll("section.gate")];
-    const landingRow = document.querySelector(".logtable tr.landing-target");
-    const rm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    let cur = -1;
-    let raf = 0;
-
-    function setCapsule(g: Element | null, index: number) {
-      if (!cap) return;
-      if (g) {
-        const d = (g as HTMLElement).dataset;
-        if (who) who.textContent = d.who ?? "";
-        if (call) call.textContent = d.call ?? "";
-        if (stage) stage.textContent = d.stage ?? "";
-        if (boardCall) boardCall.textContent = d.call ?? "";
-        if (stamp) {
-          stamp.textContent = d.stamp ?? "";
-          stamp.dataset.v = d.v || "";
-        }
-        cap.classList.add("stamped");
-      }
-      gates.forEach((el, i) => {
-        el.classList.toggle("active", i === index);
-        el.classList.toggle("done", index > i);
+  <script is:inline>
+    const buttons = document.querySelectorAll("[data-filter]");
+    const rows = document.querySelectorAll(".table-row[data-verdict]");
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.getAttribute("data-filter");
+        buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+        rows.forEach((row) => {
+          row.hidden = filter !== "all" && row.getAttribute("data-verdict") !== filter;
+        });
       });
-      stops.forEach((s, i) => s.classList.toggle("lit", i <= index + 1));
-      /* Swing: the call weaves around the gate card it is passing. */
-      if (innerWidth > 880) {
-        const off = Math.min(150, innerWidth * 0.11);
-        const dir = index % 2 === 0 ? -1 : 1;
-        cap.style.left = `calc(50% + ${index < 0 ? 0 : dir * off}px)`;
-      }
-    }
-
-    function tick() {
-      raf = 0;
-      if (!run || !cap) return;
-      const rect = run.getBoundingClientRect();
-      const vh = innerHeight;
-      /* Progress through the run, gate 1's top to the log's bottom. */
-      const span = rect.height - vh * 0.4;
-      const p = Math.min(1, Math.max(0, (-rect.top + vh * 0.5) / span));
-      const pct = p * 100;
-      if (railFill) railFill.style.setProperty("--fill", String(pct));
-      if (railGlow) railGlow.style.setProperty("--fill", String(pct));
-      if (meter) meter.style.setProperty("--fill", String(pct));
-
-      /* Which gate has the capsule reached? A gate counts once its card's
-         vertical centre passes two-thirds of the viewport. */
-      let found = -1;
-      gates.forEach((g, i) => {
-        const r = g.getBoundingClientRect();
-        if (r.top + r.height * 0.5 < vh * 0.66) found = i;
-      });
-
-      /* Docking: once the log's first row is in view, the capsule lands —
-         every station reads done and the row it becomes carries the light. */
-      const lr = landingRow?.getBoundingClientRect();
-      const docked = !!lr && lr.top < vh * 0.72;
-      cap.classList.toggle("docked", docked);
-      landingRow?.classList.toggle("landed", docked);
-      if (docked) {
-        gates.forEach((el) => { el.classList.remove("active"); el.classList.add("done"); });
-        stops.forEach((s) => s.classList.add("lit"));
-      }
-
-      if (found !== cur) {
-        cur = found;
-        if (cur >= 0) setCapsule(gates[cur], cur);
-        else {
-          if (who) who.textContent = "claude-code";
-          if (call) call.textContent = "gmail.list_threads";
-          if (stage) stage.textContent = "en route";
-          if (boardCall) boardCall.textContent = "gmail.list_threads";
-          if (stamp) { stamp.textContent = "RECEIVED"; stamp.dataset.v = ""; }
-          cap.classList.remove("stamped");
-          gates.forEach((el) => { el.classList.remove("active", "done"); });
-          stops.forEach((s, i) => s.classList.toggle("lit", i === 0));
-          cap.style.left = "50%";
-        }
-      }
-
-      /* The capsule is born at the rail, not in the hero: it only appears once
-         gate 1's section approaches, so it never covers the headline. */
-      const g1 = gates[0]?.getBoundingClientRect();
-      const borne = !!g1 && g1.top < vh * 0.95;
-      cap.style.opacity = borne && !docked ? "1" : "0";
-
-      /* The capsule's own descent: rides from 30vh to 62vh over the journey,
-         with a gentle sway so it reads as travelling, not glued. */
-      if (!rm && !docked) {
-        const mob = innerWidth <= 880;
-        const y = mob ? 0 : (30 + p * 32) * vh / 100;
-        const sway = Math.sin(performance.now() / 900 + p * 9) * 3;
-        if (mob) cap.style.top = "";
-        else cap.style.top = `${y}px`;
-        cap.style.transform = mob
-          ? `translate(-50%,0) translateY(${sway}px)`
-          : `translate(-50%,-50%) translateY(${sway}px)`;
-      }
-    }
-
-    function onScroll() {
-      if (!raf) raf = requestAnimationFrame(tick);
-    }
-    addEventListener("scroll", onScroll, { passive: true });
-    addEventListener("resize", onScroll);
-    tick();
+    });
   </script>
 </Base>
