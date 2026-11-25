@@ -11,9 +11,9 @@ import { claims } from "../claims.ts";
    verdict, and the call time. Names and verdicts are the product's own words. */
 const trace = [
   { harness: "claude-code", call: "gmail.list_threads", verdict: "ALLOWED", ms: "84" },
-  { harness: "cursor", call: "github.create_pull_request", verdict: "DENIED_TOOL", ms: "—" },
+  { harness: "cursor", call: "github.create_pull_request", verdict: "DENIED_HARNESS_TOOL", ms: "—" },
   { harness: "windsurf", call: "plane.create_work_item", verdict: "ALLOWED", ms: "121" },
-  { harness: "opencode", call: "slack.post_message", verdict: "RATE_LIMITED_TOOL", ms: "—" },
+  { harness: "opencode", call: "slack.post_message", verdict: "RATE_LIMITED_RPS", ms: "—" },
   { harness: "claude-desktop", call: "arms.get_status", verdict: "ALLOWED", ms: "3" },
   { harness: "claude-code", call: "github.list_workflow_runs", verdict: "ALLOWED", ms: "97" },
 ];
