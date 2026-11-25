@@ -1,0 +1,87 @@
+/* Policy log inner page — the audit surface the journey lands on. */
+
+.logpage { padding-block: var(--space-2xl) var(--section-gap-s); }
+.logpage h1 { font-family: var(--font-outlier); font-size: var(--text-display-s); max-width: 20ch; }
+.logpage .lead { color: var(--color-muted); margin-top: var(--space-sm); max-width: 46ch; }
+
+/* The newest call, shown as a stamped receipt — the capsule's paper language. */
+.latest {
+  margin-top: var(--space-xl);
+  max-width: 30rem;
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-2);
+  padding: var(--space-lg);
+  box-shadow: 0 1px 2px oklch(0.2 0.02 140 / 0.05);
+}
+.latest__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.latest__call {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  color: var(--color-ink);
+  margin-block: var(--space-2xs) var(--space-md);
+}
+.latest__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+.v.info { color: light-dark(oklch(0.42 0.11 230), var(--color-info)); background: color-mix(in oklab, var(--color-info) 14%, transparent); }
+
+/* Filter chips */
+.filters {
+  margin-top: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.filters__row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); }
+.filters__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-right: var(--space-xs);
+  min-width: 8ch;
+}
+.fchip {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  padding: 5px var(--space-sm);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-pill);
+  background: var(--color-paper);
+  color: var(--color-ink-2);
+  cursor: pointer;
+  min-height: 28px;
+  transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out);
+}
+.fchip:hover { background: var(--color-paper-2); }
+.fchip:active { transform: scale(0.97); transition-duration: var(--dur-micro); }
+.fchip.on {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: color-mix(in oklab, var(--color-accent) 9%, transparent);
+}
+
+.logtable--full { margin-top: var(--space-lg); }
+.logempty { margin-top: var(--space-lg); color: var(--color-muted); }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs); margin-top: var(--space-xl); font-size: var(--text-sm); }
+
+@media (max-width: 40rem) {
+  .latest__call { font-size: var(--text-md); }
+}

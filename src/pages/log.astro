@@ -1,0 +1,128 @@
+---
+import Base from "../layouts/Base.astro";
+import "../styles/home.css";
+import "../styles/passage.css";
+import "../styles/log.css";
+
+/* Rows shaped like the live audit: harness -> connector.tool, the policy
+   verdict, and the call time in ms. Verdict names are the product's own. */
+const rows = [
+  { h: "claude-code", call: "gmail.list_threads", v: "ALLOWED", ms: "84" },
+  { h: "cursor", call: "github.create_pull_request", v: "DENIED_HARNESS_TOOL", ms: "—" },
+  { h: "windsurf", call: "plane.create_work_item", v: "ALLOWED", ms: "121" },
+  { h: "opencode", call: "slack.post_message", v: "RATE_LIMITED_RPS", ms: "—" },
+  { h: "claude-desktop", call: "arms.get_status", v: "ALLOWED", ms: "3" },
+  { h: "claude-code", call: "github.list_workflow_runs", v: "ALLOWED", ms: "97" },
+  { h: "cursor", call: "jira.create_issue", v: "DENIED_GLOBAL_TOOL", ms: "—" },
+  { h: "windsurf", call: "postgres.query", v: "ALLOWED", ms: "233" },
+  { h: "opencode", call: "docker.list_containers", v: "ALLOWED", ms: "41" },
+  { h: "claude-desktop", call: "notion.search", v: "ALLOWED", ms: "156" },
+  { h: "claude-code", call: "s3.put_object", v: "QUEUED_ENV_REDACTED", ms: "—" },
+  { h: "windsurf", call: "linear.update_issue", v: "APPROVAL_REQUIRED", ms: "—" },
+  { h: "cursor", call: "gitlab.create_merge_request", v: "DENIED_HARNESS_CONNECTOR", ms: "—" },
+  { h: "opencode", call: "redis.get", v: "RATE_LIMITED_TOKEN_QUOTA", ms: "—" },
+];
+
+const fam = (v: string) =>
+  v === "ALLOWED" ? "ok" : v.startsWith("DENIED") ? "no" : v.startsWith("RATE") ? "warn" : "info";
+const group = (v: string) =>
+  v === "ALLOWED" ? "allowed" : v.startsWith("DENIED") ? "denied" : v.startsWith("RATE") ? "rate" : "queued";
+
+const harnesses = [...new Set(rows.map((r) => r.h))];
+---
+
+<Base title="ARMS — Policy log" description="Every call, every verdict: the gateway's audit surface.">
+  <div class="container">
+    <section class="logpage">
+      <h1>Policy log</h1>
+      <p class="lead">Every call, every verdict. The audit the gateway keeps for each decision.</p>
+
+      <article class="latest" aria-label="The newest call">
+        <div class="latest__head">
+          <span class="latest__tag">newest</span>
+          <span class="latest__ms">84 ms</span>
+        </div>
+        <div class="latest__call">claude-code · gmail.list_threads</div>
+        <div class="latest__meta">
+          <span>key: read-only</span>
+          <span>route: gmail connector</span>
+          <span class="v ok">ALLOWED</span>
+        </div>
+      </article>
+
+      <div class="filters" role="group" aria-label="Filter the log">
+        <div class="filters__row" data-group="verdict">
+          <span class="filters__label">verdict</span>
+          <button class="fchip on" data-v="all" type="button">all</button>
+          <button class="fchip" data-v="allowed" type="button">allowed</button>
+          <button class="fchip" data-v="denied" type="button">denied</button>
+          <button class="fchip" data-v="rate" type="button">rate-limited</button>
+          <button class="fchip" data-v="queued" type="button">queued</button>
+        </div>
+        <div class="filters__row" data-group="harness">
+          <span class="filters__label">harness</span>
+          <button class="fchip on" data-h="all" type="button">all</button>
+          {harnesses.map((h) => (
+            <button class="fchip" data-h={h} type="button">{h}</button>
+          ))}
+        </div>
+      </div>
+
+      <div class="logwrap" tabindex="0">
+      <table class="logtable logtable--full">
+        <thead>
+          <tr><th scope="col">Harness</th><th scope="col">Call</th><th scope="col">Verdict</th><th scope="col">ms</th></tr>
+        </thead>
+        <tbody id="logbody">
+          {rows.map((r, i) => (
+            <tr class={i === 0 ? "landed" : ""} data-h={r.h} data-g={group(r.v)}>
+              <td class="t-harness">{r.h}</td>
+              <td class="t-call">{r.call}</td>
+              <td><span class={`v ${fam(r.v)}`}>{r.v}</span></td>
+              <td class="t-ms">{r.ms}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      </div>
+      <p class="logempty" id="logempty" hidden>No calls match both filters.</p>
+
+      <p class="legend muted">
+        <span class="v ok">ALLOWED</span> passed to the connector ·
+        <span class="v no">DENIED_*</span> refused by policy ·
+        <span class="v warn">RATE_LIMITED_*</span> held by a quota ·
+        <span class="v info">QUEUED / APPROVAL</span> waiting on a yes
+      </p>
+    </section>
+  </div>
+
+  <script>
+    /* Working filters: verdict group x harness, ANDed. */
+    const chips = [...document.querySelectorAll<HTMLElement>(".fchip")];
+    const rows = [...document.querySelectorAll<HTMLElement>("#logbody tr")];
+    const empty = document.getElementById("logempty");
+    const state = { v: "all", h: "all" };
+    function apply() {
+      let shown = 0;
+      rows.forEach((r) => {
+        const ok =
+          (state.v === "all" || r.dataset.g === state.v) &&
+          (state.h === "all" || r.dataset.h === state.h);
+        r.style.display = ok ? "" : "none";
+        if (ok) shown++;
+      });
+      if (empty) empty.hidden = shown !== 0;
+    }
+    chips.forEach((c) =>
+      c.addEventListener("click", () => {
+        const isV = "v" in c.dataset;
+        const key = isV ? (c.dataset.v as string) : (c.dataset.h as string);
+        if (isV) state.v = key; else state.h = key;
+        c.parentElement
+          ?.querySelectorAll(".fchip")
+          .forEach((s) => s.classList.toggle("on", s === c));
+        apply();
+      }),
+    );
+  </script>
+</Base>

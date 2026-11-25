@@ -1,0 +1,372 @@
+/* The Passage: one tool call travels the page down a rail through the real
+   gates — intake, trust check, policy verdict, routing — and is stamped at
+   each, docking into the policy log as its newest row. Real design system:
+   tokens, Rethink/Inter/JetBrains, paper + graphite, moss accent. */
+
+/* ---------- the journey frame ---------- */
+.journey { position: relative; }
+/* The run carries the rail: without positioning here the absolute rail
+   anchors to .journey and slashes the hero. */
+.journey-run { position: relative; }
+
+/* The rail the call rides: centred on desktop, hugging the left edge on
+   narrow screens, stations punched at each gate's line. */
+.rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--color-rule);
+  z-index: 0;
+}
+.rail__fill {
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(var(--fill, 0) * 1%);
+  background: linear-gradient(var(--color-accent), color-mix(in oklab, var(--color-accent) 55%, var(--color-rule)));
+}
+.rail__glow {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--fill, 0) * 1%);
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 14px 2px color-mix(in oklab, var(--color-accent) 55%, transparent);
+}
+
+/* ---------- the travelling call capsule ---------- */
+.capsule {
+  position: fixed;
+  left: 50%;
+  top: 34vh;
+  z-index: var(--z-sticky);
+  width: min(340px, 82vw);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  box-shadow: 0 1px 2px oklch(0.2 0.02 140 / 0.08), 0 14px 44px -8px oklch(0.2 0.02 140 / 0.22);
+  padding: var(--space-md) var(--space-md) var(--space-sm);
+  transition: opacity var(--dur-short) var(--ease-out), left var(--dur-long) var(--ease-in-out);
+}
+.capsule[hidden] { display: none; }
+.capsule__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+.capsule__who,
+.capsule__stage {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.capsule__call {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-ink);
+  margin-block: var(--space-2xs) var(--space-sm);
+  overflow-wrap: anywhere;
+}
+.capsule__track {
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--color-paper-3);
+  overflow: hidden;
+}
+.capsule__meter {
+  display: block;
+  height: 100%;
+  width: calc(var(--fill, 0) * 1%);
+  background: var(--color-accent);
+  border-radius: inherit;
+}
+.capsule__stamp {
+  position: absolute;
+  right: var(--space-sm);
+  bottom: calc(var(--space-sm) * -1);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  padding: 5px 9px;
+  border: 2px solid var(--color-accent);
+  border-radius: 6px;
+  color: var(--color-accent);
+  background: var(--color-paper);
+  transform: rotate(-5deg);
+  opacity: 0;
+}
+.capsule.stamped .capsule__stamp { opacity: 1; animation: stamp-in 260ms var(--ease-out); }
+.capsule__stamp[data-v="ok"] { border-color: var(--color-success); color: var(--color-success); }
+.capsule__stamp[data-v="no"] { border-color: var(--color-error); color: var(--color-error); }
+.capsule__stamp[data-v="warn"] { border-color: var(--color-warning); color: var(--color-warning); }
+@keyframes stamp-in {
+  0% { opacity: 0; transform: rotate(-16deg) scale(1.7); }
+  55% { opacity: 1; transform: rotate(-4deg) scale(0.95); }
+  100% { opacity: 1; transform: rotate(-5deg) scale(1); }
+}
+.capsule.docked { opacity: 0; }
+
+/* ---------- hero: the departure board ---------- */
+.hero {
+  min-height: 88vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
+  align-items: center;
+  padding-block: var(--space-3xl) var(--space-2xl);
+  position: relative;
+  z-index: 1;
+}
+@media (min-width: 56rem) {
+  .hero { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+}
+.hero__intro { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-md); }
+.hero h1 {
+  font-family: var(--font-outlier);
+  font-weight: var(--display-weight);
+  font-size: var(--text-display);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  max-width: 12ch;
+}
+.hero .lead { max-width: 30ch; }
+.hero .sub { color: var(--color-muted); max-width: 44ch; margin: 0; }
+
+/* The itinerary: the journey's stations as a boarding card */
+.board {
+  width: 100%;
+  max-width: 26rem;
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  background: var(--color-paper-2);
+  padding: var(--space-lg);
+  justify-self: end;
+}
+.board__title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-md);
+}
+.board ol { list-style: none; margin: 0; padding: 0; }
+.board li {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-block: var(--space-2xs);
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+}
+.board li::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-rule);
+  justify-self: center;
+}
+.board li.lit::before { border-color: var(--color-accent); background: var(--color-accent); }
+.board li .stop { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); }
+.board .live {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-rule);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+.board .live b { color: var(--color-ink); font-weight: 500; }
+
+/* ---------- the gates ---------- */
+.gate { position: relative; z-index: 1; }
+.gate__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr);
+  min-height: 72vh;
+  align-items: center;
+}
+.gate__card {
+  grid-column: 1;
+  position: relative;
+  max-width: 25rem;
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-xl);
+  box-shadow: 0 1px 2px oklch(0.2 0.02 140 / 0.05);
+  transition: box-shadow var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out), border-color var(--dur-long) var(--ease-out);
+}
+.gate:nth-of-type(odd) .gate__card { grid-column: 3; justify-self: start; }
+.gate:nth-of-type(even) .gate__card { grid-column: 1; justify-self: end; }
+.gate.active .gate__card {
+  border-color: color-mix(in oklab, var(--color-accent) 45%, var(--color-rule));
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px oklch(0.2 0.02 140 / 0.06), 0 18px 44px -10px oklch(0.2 0.02 140 / 0.18);
+}
+.gate__num {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  color: var(--color-accent);
+}
+.gate__card h2 { margin-block: var(--space-2xs) var(--space-sm); }
+.gate__card p { color: var(--color-ink-2); font-size: var(--text-md); }
+.gate__side {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-rule);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+.gate__stamp {
+  position: absolute;
+  top: calc(var(--space-sm) * -1);
+  right: var(--space-lg);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  padding: 5px 9px;
+  border: 2px solid var(--color-accent);
+  border-radius: 6px;
+  color: var(--color-accent);
+  background: var(--color-paper);
+  transform: rotate(4deg);
+  opacity: 0;
+}
+.gate.done .gate__stamp { opacity: 1; }
+.gate__stamp[data-v="ok"] { border-color: var(--color-success); color: var(--color-success); }
+.gate__stamp[data-v="no"] { border-color: var(--color-error); color: var(--color-error); }
+.gate__stamp[data-v="warn"] { border-color: var(--color-warning); color: var(--color-warning); }
+
+/* Station node on the rail, centred on the gate section */
+.station {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--color-rule);
+  background: var(--color-paper);
+  z-index: 2;
+  transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+}
+.gate.active .station { border-color: var(--color-accent); background: var(--color-accent); animation: station-pulse 1.6s var(--ease-out) infinite; }
+.gate.done .station { border-color: var(--color-accent); background: var(--color-accent); }
+.gate.done .station::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--color-paper);
+}
+@keyframes station-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-accent) 40%, transparent); }
+  70% { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* ---------- destination: the call lands ---------- */
+.landing { position: relative; z-index: 1; padding-block: var(--section-gap) 0; }
+.landing__lead { color: var(--color-muted); max-width: 52ch; margin-top: var(--space-sm); }
+.landing__more { margin-top: var(--space-md); }
+.logtable {
+  width: 100%;
+  margin-top: var(--space-xl);
+  border-collapse: collapse;
+  background: var(--color-paper-2);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+.logtable th {
+  font-weight: 500;
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-align: left;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+.logtable td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  font-size: var(--text-sm);
+}
+.logtable tbody tr:last-child td { border-bottom: 0; }
+.logtable .t-harness { color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); }
+.logtable .t-call { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-ink); }
+.logtable .t-ms { text-align: right; color: var(--color-muted); font-family: var(--font-mono); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+.logtable tr.landed td { background: color-mix(in oklab, var(--color-accent) 8%, transparent); }
+.v {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  padding: 3px var(--space-xs);
+  border-radius: 5px;
+}
+/* Chip text is a darker shade of the status hue in light mode — the token
+   alone misses 4.5:1 on the tinted chip background (axe color-contrast). */
+.v.ok { color: light-dark(oklch(0.42 0.14 150), var(--color-success)); background: color-mix(in oklab, var(--color-success) 12%, transparent); }
+.v.no { color: light-dark(oklch(0.44 0.19 25), var(--color-error)); background: color-mix(in oklab, var(--color-error) 12%, transparent); }
+.v.warn { color: light-dark(oklch(0.44 0.11 70), var(--color-warning)); background: color-mix(in oklab, var(--color-warning) 14%, transparent); }
+
+/* ---------- the rest of home reuses home.css (.map, .points) ---------- */
+
+/* ---------- phone: rail to the left, capsule bottom-docked ---------- */
+@media (max-width: 55rem) {
+  .rail { left: 22px; margin-left: 0; }
+  .gate__inner { grid-template-columns: 44px minmax(0, 1fr); min-height: 82vh; align-items: start; padding-top: 14vh; }
+  /* The odd/even desktop rules above are (0,3,0) — match them exactly,
+     else even gates stay in the 44px gutter column and overflow off-screen. */
+  .gate__card,
+  .gate:nth-of-type(odd) .gate__card,
+  .gate:nth-of-type(even) .gate__card { grid-column: 2; justify-self: stretch; max-width: none; margin-bottom: 30vh; }
+  .station { left: 23px; top: 26vh; transform: translateX(-50%); }
+  .capsule { top: auto; bottom: var(--space-md); transform: translate(-50%, 0); }
+  .board { justify-self: stretch; max-width: none; }
+  .logtable th:nth-child(4), .logtable td:nth-child(4) { display: none; }
+  .logwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  /* Fit the log inside the viewport rather than clipping verdict names:
+     wrap long mono values and shrink the verdict chip. */
+  .logwrap .logtable { min-width: 0; }
+  .logtable .t-harness, .logtable .t-call { overflow-wrap: anywhere; }
+  .logtable th, .logtable td { padding: var(--space-2xs) var(--space-xs); }
+  .logtable .v { font-size: 10px; letter-spacing: 0.03em; padding: 2px 5px; }
+}
+
+/* ---------- reduced motion: the capsule stays home; gates carry their stamps ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .capsule { display: none; }
+  .rail__glow { display: none; }
+  .gate .gate__stamp { opacity: 1; }
+  .gate .station { border-color: var(--color-accent); background: var(--color-accent); }
+  .gate .station::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--color-paper);
+  }
+}
