@@ -1,0 +1,201 @@
+/* Production Signal-objects homepage extensions. The base direction language lives
+   in directions/signal.css; these rules carry the full product content in the same
+   object system without turning the page back into a preview artifact. */
+
+.signal-page .lead {
+  max-width: 430px;
+  margin: 24px 0 0;
+  color: var(--color-ink-2);
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  line-height: 1.48;
+}
+
+.signal-opening {
+  max-width: 470px;
+  margin: 14px 0 0;
+  color: var(--color-muted);
+  line-height: 1.58;
+}
+
+.signal-page .ss-button {
+  min-height: 44px;
+  border: 2px solid var(--signal-line);
+  border-radius: 0;
+  padding: 0 18px;
+  box-shadow: 6px 6px 0 var(--signal-line);
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.2;
+  transition: transform 120ms var(--ease-out), box-shadow 120ms var(--ease-out), background-color 120ms var(--ease-out);
+}
+
+.signal-page .ss-button--primary,
+.signal-page .ss-button--primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--signal-line);
+  background: var(--signal-accent);
+  color: var(--signal-accent-ink);
+}
+
+.signal-page .ss-button:hover:not(:disabled):not([aria-disabled="true"]),
+.signal-page .ss-button:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--signal-line);
+}
+
+.signal-page .ss-button:active:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--signal-line);
+  background: var(--signal-accent);
+  color: var(--signal-accent-ink);
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--signal-line);
+}
+
+.harnesslead {
+  margin: 28px 0 0;
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.signal-harnesses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.signal-harnesses span {
+  border: 1px solid var(--signal-line);
+  padding: 5px 8px;
+  background: var(--signal-panel);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+.signal-more {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.signal-more a {
+  color: var(--signal-accent);
+  font-weight: 650;
+}
+
+.signal-map-section,
+.signal-claims {
+  margin-top: 88px;
+}
+
+.signal-map {
+  margin: 0;
+  border: 2px solid var(--signal-line);
+  overflow-x: auto;
+  background: var(--signal-panel);
+}
+
+.signal-map figcaption {
+  border-bottom: 2px solid var(--signal-line);
+  padding: 12px 14px;
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.signal-map table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.signal-map th,
+.signal-map td {
+  border-bottom: 1px solid color-mix(in oklch, var(--signal-line) 35%, transparent);
+  padding: 13px 14px;
+  text-align: left;
+}
+
+.signal-map thead th {
+  color: var(--color-muted);
+  font-size: 0.74rem;
+  font-weight: 500;
+}
+
+.signal-map tbody tr:last-child th,
+.signal-map tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.cell {
+  display: inline-block;
+  min-width: 5ch;
+  border: 1px solid currentColor;
+  padding: 3px 7px;
+  font-size: 0.72rem;
+}
+
+.cell.on { color: var(--color-success); }
+.cell.off { color: var(--color-muted); }
+
+.claim-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 2px solid var(--signal-line);
+  border-left: 2px solid var(--signal-line);
+}
+
+.claim-grid article {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-height: 190px;
+  border-right: 2px solid var(--signal-line);
+  border-bottom: 2px solid var(--signal-line);
+  padding: 20px;
+  background: var(--signal-panel);
+}
+
+.claim-index {
+  color: var(--signal-accent);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.claim-grid h3 {
+  margin: 0;
+  font-family: var(--font-outlier);
+  font-size: clamp(1.25rem, 2vw, 1.8rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.claim-grid p {
+  color: var(--color-ink-2);
+  line-height: 1.55;
+}
+
+.signal-close .eyebrow {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 900px) {
+  .claim-grid { grid-template-columns: 1fr; }
+  .claim-grid article { min-height: 0; }
+}
+
+@media (max-width: 640px) {
+  .signal-harnesses span { font-size: 0.68rem; }
+  .signal-map-section,
+  .signal-claims { margin-top: 64px; }
+  .signal-map table { min-width: 590px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-page .ss-button,
+  .signal-page .signal-button {
+    transition-duration: 0.01ms !important;
+  }
+}
