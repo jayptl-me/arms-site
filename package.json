@@ -8,7 +8,7 @@
     "preview": "bun --bun astro preview",
     "check": "bun --bun astro check",
     "lint": "oxlint",
-    "test": "bun test/launch.ts && bun test/ui-button.ts",
+    "test": "bun test/launch.ts && bun test/ui-button.ts && bun test/directions.ts",
     "a11y": "bun scripts/a11y.ts",
     "budget": "bun scripts/budget.ts",
     "negative": "bash scripts/negative-controls.sh",

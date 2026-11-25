@@ -1,0 +1,106 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { claims } from "../../../claims.ts";
+import { connectors, metrics, trace, verdictClass } from "./shared.ts";
+import "../../../styles/directions/signal.css";
+---
+
+<Base title="ARMS direction A — Signal objects" description="A raw-and-bold coded direction for the ARMS site." unindexed>
+  <style is:inline>
+    @media (prefers-reduced-motion: reduce) {
+      .signal-page *, .signal-page *::before, .signal-page *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+  <div class="signal-page" data-direction="signal-objects">
+    <section class="signal-hero">
+      <div class="signal-copy">
+        <p class="signal-kicker">Direction A · raw-and-bold / product object</p>
+        <h1>{claims.headline}</h1>
+        <p class="signal-lead">Policy decisions made visible as ordered objects: the call, the harness, the verdict, the proof.</p>
+        <div class="signal-actions">
+          <a class="signal-button" href={claims.action.href}>Get ARMS on GitHub</a>
+          <a class="signal-button secondary" href="/look/directions/clay-observatory/">Compare with B</a>
+        </div>
+      </div>
+      <div class="signal-proof" aria-label="Real ARMS console preview">
+        <div class="proof-bar"><span>ARMS console</span><span>deployed build proof</span></div>
+        <img class="shot shot-dark" src="/console-proof/dark-overview-tabs.webp" alt="Real ARMS console preview in dark mode" width="1600" height="1000" loading="eager" />
+        <img class="shot shot-light" src="/console-proof/light-overview-tabs.webp" alt="Real ARMS console preview in light mode" width="1600" height="1000" loading="eager" />
+      </div>
+    </section>
+
+    <section class="signal-metrics" aria-label="Product facts">
+      {metrics.map((m, index) => (
+        <article>
+          <span class="metric-num">{m.value}</span>
+          <span class="metric-label">{m.label}</span>
+          <span class="metric-note">0{index + 1} · {m.note}</span>
+        </article>
+      ))}
+    </section>
+
+    <section class="signal-board">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Policy filter</p>
+          <h2>Every call keeps its verdict.</h2>
+        </div>
+        <div class="filter-controls" role="group" aria-label="policy filter">
+          <button type="button" aria-pressed="true" data-filter="all">All</button>
+          <button type="button" aria-pressed="false" data-filter="ALLOWED">Allowed</button>
+          <button type="button" aria-pressed="false" data-filter="DENIED_HARNESS_TOOL">Denied</button>
+          <button type="button" aria-pressed="false" data-filter="RATE_LIMITED_RPS">Limited</button>
+        </div>
+      </div>
+      <div class="signal-table" tabindex="0" aria-label="Sample policy audit rows">
+        <div class="table-head"><span>Harness</span><span>Call</span><span>Verdict</span><span>ms</span></div>
+        {trace.map((row) => (
+          <div class="table-row" data-verdict={row.verdict}>
+            <span>{row.harness}</span>
+            <strong>{row.call}</strong>
+            <span class={`verdict ${verdictClass(row.verdict)}`}>{row.verdict}</span>
+            <span class="ms">{row.ms}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="signal-connectors">
+      <div class="section-head compact">
+        <p class="eyebrow">Connector inventory</p>
+        <h2>Named tools, no decoration.</h2>
+      </div>
+      <div class="connector-grid">
+        {connectors.map((connector, index) => (
+          <details open={index === 0}>
+            <summary><span>{connector.name}</span><span>{connector.scope}</span></summary>
+            <p>{connector.body}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="signal-close">
+      <h2>Why this direction exists</h2>
+      <p>
+        This is the raw-and-bold register translated into a product page: type system first, mono for truth,
+        dense but ordered information, monochrome plus one restrained accent, and panels that feel like objects.
+        It avoids orange, borrowed gradients, generic icon cards and decorative glow.
+      </p>
+      <a href="/look/directions/">Back to the round</a>
+    </section>
+  </div>
+  <script is:inline>
+    const buttons = document.querySelectorAll("[data-filter]");
+    const rows = document.querySelectorAll(".table-row[data-verdict]");
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.getAttribute("data-filter");
+        buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+        rows.forEach((row) => {
+          row.hidden = filter !== "all" && row.getAttribute("data-verdict") !== filter;
+        });
+      });
+    });
+  </script>
+</Base>
