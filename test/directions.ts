@@ -6,6 +6,15 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
 const round = join(dist, "look", "directions");
 
+if (existsSync(join(root, "src", "pages", "look", "directions", "shared.ts"))) {
+  console.error("shared direction data still lives inside the route tree");
+  process.exit(1);
+}
+if (!existsSync(join(root, "src", "lib", "directions.ts"))) {
+  console.error("shared direction data missing from src/lib");
+  process.exit(1);
+}
+
 function read(path: string, label: string): string {
   const file = join(round, path);
   if (!existsSync(file)) {
