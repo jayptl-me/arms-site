@@ -29,13 +29,13 @@
   --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-outlier: "Rethink Sans", ui-sans-serif, system-ui, sans-serif;
-  --radius-card: 8px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
+  --radius-card: 0; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
   --tracking-display: -0.02em; --display-weight: 560;
   --space-2: var(--space-xs);
   --space-3: var(--space-sm);
   --space-4: var(--space-md);
   --space-6: var(--space-lg);
-  --radius-control: 8px;
+  --radius-control: 0;
   --color-line: var(--color-rule);
   --color-line-control: var(--color-rule);
   --color-surface: var(--color-paper);
